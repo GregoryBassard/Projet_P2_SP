@@ -22,7 +22,7 @@ Cette visualisation interactive permet d’explorer les trajectoires des NEOs (n
 - Poser de nouvelles questions
 - Explorer et découvrir
 ### Message
-Les astéroïdes et comet passent régulièrement à proximité de la Terre, montrant l’importance de leur surveillance continue.
+Les astéroïdes et comètes passent régulièrement à proximité de la Terre, montrant l’importance de leur surveillance continue.
 ### Public cible
 Grand public, curieux ou passionné d’astronomie et de phénomène spatial.
 ## Technologies & data set
