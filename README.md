@@ -1,4 +1,4 @@
-# Visualisation interactive des Astéroïdes et Comet proches de la Terre
+# Visualisation interactive des Astéroïdes et Comètes proches de la Terre
 ## Descriptif
 Cette visualisation interactive permet d’explorer les trajectoires des NEOs (near-Earth objects) proches de la Terre à partir des données officielles du CNEOS (NASA). Faire une représentation dynamique de ces objets célestes, mettre en lumière leur fréquence, leur proximité, etc.
 ## Contraintes
