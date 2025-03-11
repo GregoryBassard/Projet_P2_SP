@@ -7,7 +7,7 @@ Cette visualisation interactive permet d’explorer les trajectoires des NEOs (n
 - Application interactive
 ## Fonctionnalités
 ### Bases
-- Affichage en 3D de la Terre et NEOs en orbite.
+- Affichage en 3D de la Terre (et surment un peu du systeme solaire).
 - Visualisation des trajectoires des NEOs avec mise à jour en fonction des données réelles.
 - Possibilité de cliquer sur un astéroïde pour obtenir ses caractéristiques (taille, vitesse, distance de passage, etc.)
 - Rendre comprehensible les mesures avec des conversions des unités unique au monde spatial avec des unités plus communes, pour facilité la compréhension au grand public (voire Public cible)
