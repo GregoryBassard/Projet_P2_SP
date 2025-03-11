@@ -16,14 +16,14 @@ Cette visualisation interactive permet d’explorer en temps réel les trajectoi
 - Déplacement de la caméra.
 - Affichage des NEOs potentiellement dangereux pour la Terre.
 - Possibilité de faire défilé le temps (dans le passé et le future) et voire les NEOs ce déplacer sur la carte 3D de la Terre
-## Message
-Les astéroïdes et comet passent régulièrement à proximité de la Terre, montrant l’importance de leur surveillance continue.
 ## Objectif de Visualisation
 - Compréhension plus rapide
 - Communiquer des informations
 - Poser de nouvelles questions
 - Explorer et découvrir
-## Public cible
+### Message
+Les astéroïdes et comet passent régulièrement à proximité de la Terre, montrant l’importance de leur surveillance continue.
+### Public cible
 Grand public, curieux ou passionné d’astronomie et de phénomène spatial.
 ## Technologies & data set
 - Python 3.11.X
