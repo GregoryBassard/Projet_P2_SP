@@ -1,6 +1,6 @@
 # Visualisation interactive des Astéroïdes et Comet proches de la Terre
 ## Descriptif
-Cette visualisation interactive permet d’explorer en temps réel les trajectoires des NEOs (near-Earth objects) proches de la Terre à partir des données officielles du CNEOS (NASA). Faire une représentation dynamique de ces objets célestes, mettre en lumière leur fréquence, leur proximité.
+Cette visualisation interactive permet d’explorer les trajectoires des NEOs (near-Earth objects) proches de la Terre à partir des données officielles du CNEOS (NASA). Faire une représentation dynamique de ces objets célestes, mettre en lumière leur fréquence, leur proximité, etc.
 ## Contraintes
 - Python OO
 - Visualisation des données
