@@ -22,6 +22,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Local ephemeris files
+*.bsp
+
 # C extensions
 *.so
 
