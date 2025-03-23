@@ -10,9 +10,9 @@ kernels = load('de440.bsp')
 
 planets_data = {
     'name': ['Mercure', 'Vénus', 'Terre', 'Mars', 'Jupiter', 'Saturne', 'Uranus', 'Neptune'],
-    'SPICE_ID': [1, 2, 3, 4, 5, 6, 7, 8],
-    'color': ['gray', 'orange', 'blue', 'red', 'rosybrown', 'sandybrown', 'cyan', 'blue'],
-    'time': [88, 225, 365, 687, 4333, 10759, 30687, 60190]
+    'SPICE_ID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 301],
+    'color': ['gray', 'orange', 'blue', 'red', 'rosybrown', 'sandybrown', 'cyan', 'blue', 'gray', 'white'],
+    'time': [88, 225, 365, 687, 4333, 10759, 30687, 60190, 90560, 28]
 }
 
 # Charger le Soleil
@@ -25,11 +25,18 @@ time_now = ts.now()
 # Création de la figure 3D
 fig = go.Figure()
 
+planet_show = ['Mercure', 'Vénus', 'Terre', 'Mars', 'Jupiter', 'Saturne', 'Uranus', 'Neptune', 'Pluton']
+
 for i in range(len(planets_data['name'])):
+    if planets_data['name'][i] not in planet_show:
+        continue
+    
     planet = kernels[planets_data['SPICE_ID'][i]]
 
     # Générer une série de dates (un point par jour)
-    times = ts.linspace(time_now, time_now + planets_data['time'][i])
+    times = ts.linspace(time_now, time_now + planets_data['time'][i], planets_data['time'][i])
+    # print(f'{planets_data['name'][i]}: {times[0].utc_jpl()} -> {times[-1].utc_jpl()}')
+    # print(f'Nombre de points: {len(times)}')
 
     pos = (planet - sun).at(times).position.km
 
@@ -46,6 +53,9 @@ for i in range(len(planets_data['name'])):
     ))
 
 for i in range(len(planets_data['name'])):
+    if planets_data['name'][i] not in planet_show:
+        continue
+
     planet = kernels[planets_data['SPICE_ID'][i]]
     pos = (planet - sun).at(time_now).position.km
     
@@ -66,12 +76,12 @@ fig.add_trace(go.Scatter3d(
 
 fig.update_layout(
     title='Orbite des Planètes autour du Soleil',
-    template='plotly_dark',
-    scene = dict(
-        xaxis = dict(visible=False),
-        yaxis = dict(visible=False),
-        zaxis = dict(visible=False)
-        )
+    template='plotly_dark'
+    # scene = dict(
+    #     xaxis = dict(visible=False),
+    #     yaxis = dict(visible=False),
+    #     zaxis = dict(visible=False)
+    #     )
     )
 
 app = dash.Dash(__name__)
