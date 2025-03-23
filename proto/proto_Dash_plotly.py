@@ -2,6 +2,7 @@ from skyfield.api import load
 import plotly.graph_objects as go
 import numpy as np
 import dash
+import pandas as pd
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
@@ -25,7 +26,7 @@ time_now = ts.now()
 # Création de la figure 3D
 fig = go.Figure()
 
-planet_show = ['Mercure', 'Vénus', 'Terre', 'Mars', 'Jupiter', 'Saturne', 'Uranus', 'Neptune', 'Pluton']
+planet_show = ['Mercure', 'Vénus', 'Terre', 'Mars']#, 'Jupiter', 'Saturne', 'Uranus', 'Neptune', 'Pluton']
 
 for i in range(len(planets_data['name'])):
     if planets_data['name'][i] not in planet_show:
@@ -76,13 +77,38 @@ fig.add_trace(go.Scatter3d(
 
 fig.update_layout(
     title='Orbite des Planètes autour du Soleil',
-    template='plotly_dark'
-    # scene = dict(
-    #     xaxis = dict(visible=False),
-    #     yaxis = dict(visible=False),
-    #     zaxis = dict(visible=False)
-    #     )
+    template='plotly_dark',
+    scene = dict(
+        xaxis = dict(visible=False),
+        yaxis = dict(visible=False),
+        zaxis = dict(visible=False)
+        )
     )
+
+# ajout NEO
+from astroquery.jplhorizons import Horizons
+
+# ID de l'astéroïde et date d'observation
+obj = Horizons(id='2025 FC2', location='500@10', epochs={'start': '2025-03-23', 'stop': '2027-05-23', 'step': '1d'})
+
+# Récupérer les coordonnées héliocentriques
+vectors = obj.vectors()
+
+fig.add_trace(go.Scatter3d(
+    x=vectors['x']*1.496e+8, y=vectors['y']*1.496e+8, z=vectors['z']*1.496e+8,
+    mode='lines',
+    marker=dict(size=1, color='white', opacity=0.9),
+    line=dict(width=2),
+    name='Orbite 2025 FC2'
+))
+
+fig.add_trace(go.Scatter3d(
+    x=[vectors['x'][0]*1.496e+8], y=[vectors['y'][0]*1.496e+8], z=[vectors['z'][0]*1.496e+8],
+    mode='markers+text',
+    marker=dict(size=4, color='white', opacity=0.9),
+    text='2025 FC2'
+))
+
 
 app = dash.Dash(__name__)
 
