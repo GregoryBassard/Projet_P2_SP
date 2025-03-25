@@ -5,23 +5,24 @@ import dash
 import pandas as pd
 from dash import dcc, html
 from dash.dependencies import Input, Output
-from utils import load_solar_system, load_asteroid, get_neos_name
+from utils import load_solar_system, load_asteroid_orbit, load_asteroid, get_neos1, get_neos2
 
 fig = go.Figure()
 
 fig = load_solar_system(fig)
 
-date_max = '2030-01-01'
-date_min = '2020-01-01'
-dist_max = '0.05LD'
-fullname = '1'
-nea_comet = '1'
+# date_max = '2030-01-01'
+# date_min = '2020-01-01'
+# dist_max = '0.05LD'
+# fullname = '1'
+# nea_comet = '1'
 
-neos = get_neos_name(date_max, date_min, dist_max, fullname, nea_comet)
+neos = get_neos2(1e-6, -4)
 
-for i in range(len(neos)):
-    fig = load_asteroid(fig, neos['des'][i])
-    # fig = load_asteroid_orbit(fig, neos['des'][i], '2025-03-23', '2027-05-23', '1d')
+for neo in neos.to_dict('records'):
+    print(neo['des'])
+    fig = load_asteroid(fig, neo['des'])
+    # fig = load_asteroid_orbit(fig, neo['des'], '2025-01-01', '2027-01-01', '1d')
 
 fig.update_layout(
     title='Orbite des Planètes autour du Soleil',
