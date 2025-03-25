@@ -18,6 +18,8 @@ fullname = '1'
 nea_comet = '1'
 
 neos = get_neos_name(date_max, date_min, dist_max, fullname, nea_comet)
+neos_list = [neo for neo in neos['des']]
+print(neos_list)
 
 for i in range(len(neos)):
     fig = load_asteroid(fig, neos['des'][i])
