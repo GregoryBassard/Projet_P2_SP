@@ -61,7 +61,8 @@ def load_solar_system(fig:go.Figure)->go.Figure:
         x=[0], y=[0], z=[0],
         mode='markers+text',
         marker=dict(size=10, color='yellow', opacity=1),
-        text='Soleil'
+        text='Soleil',
+        name='Soleil'
     ))
 
     return fig

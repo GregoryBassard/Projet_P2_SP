@@ -20,7 +20,7 @@ fig = load_solar_system(fig)
 neos = get_neos2(1e-6, -4)
 
 for neo in neos.to_dict('records'):
-    print(neo['des'])
+    # print(neo['des'])
     fig = load_asteroid(fig, neo['des'])
     # fig = load_asteroid_orbit(fig, neo['des'], '2025-01-01', '2027-01-01', '1d')
 
