@@ -36,21 +36,24 @@ def create_3d_axes():
     x_axis = go.Scatter3d(
         x=[-axis_length, axis_length], y=[0, 0], z=[0, 0],
         mode='lines',
-        line=dict(color='yellow', width=3),
+        line=dict(color='yellow', width=1),
+        marker= dict(opacity=0.6),
         name='X-Axis'
     )
 
     y_axis = go.Scatter3d(
         x=[0, 0], y=[-axis_length, axis_length], z=[0, 0],
         mode='lines',
-        line=dict(color='yellow', width=3),
+        line=dict(color='yellow', width=1),
+        marker= dict(opacity=0.6),
         name='Y-Axis'
     )
 
     z_axis = go.Scatter3d(
         x=[0, 0], y=[0, 0], z=[-axis_length, axis_length],
         mode='lines',
-        line=dict(color='yellow', width=3),
+        line=dict(color='yellow', width=1),
+        marker= dict(opacity=0.6),
         name='Z-Axis'
     )
 

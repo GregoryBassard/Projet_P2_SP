@@ -40,7 +40,7 @@ def load_solar_system(fig:go.Figure)->go.Figure:
             x=pos_orbit[0], y=pos_orbit[1], z=pos_orbit[2],
             mode='lines',
             marker=dict(
-                size=1,
+                size=2,
                 color=planets_data['color'][i],
                 opacity=0.9
             ),
@@ -94,7 +94,7 @@ def load_asteroid_orbit(fig:go.Figure, asteroid_id:str, start_date:str, stop_dat
     fig.add_trace(go.Scatter3d(
         x=vectors['x']*1.496e+8, y=vectors['y']*1.496e+8, z=vectors['z']*1.496e+8,
         mode='lines',
-        marker=dict(size=1, color='white', opacity=0.9),
+        marker=dict(size=2, color='white', opacity=0.9),
         line=dict(width=2),
         name=f'Orbite {asteroid_id}'
     ))
