@@ -33,15 +33,37 @@ class NEOs:
                 x=[vectors['x'][0]*1.496e+8], y=[vectors['y'][0]*1.496e+8], z=[vectors['z'][0]*1.496e+8],
                 mode='markers+text',
                 marker=dict(size=4, color='white', opacity=0.9),
-                text=self.name,
-                name=self.name
+                text=f'{self.name} (neo)',
+                name=f'{self.name} (neo)'
             ))
         except:
             print(f"Erreur lors du chargement de l'astéroïde {self.name}")
 
         return fig
     
-    def load_neos(self, ip_min:str, ps_min:str)->list:
+    def display_orbital_path(self, fig:go.Figure)->go.Figure:
+        now = datetime.now()
+        stop = now + timedelta(days=self.get_orbite_date_range())
+        
+        try:
+            obj = Horizons(id=self.name, location='500@10', epochs={'start': now.strftime('%Y-%m-%d'), 'stop': stop.strftime('%Y-%m-%d'), 'step': '1d'})
+
+            vectors = obj.vectors()
+
+            fig.add_trace(go.Scatter3d(
+                x=vectors['x']*1.496e+8, y=vectors['y']*1.496e+8, z=vectors['z']*1.496e+8,
+                mode='lines',
+                marker=dict(size=1, color='white', opacity=0.9),
+                line=dict(width=2),
+                visible=False,
+                name=f'Orbite {self.name} (neo)'
+            ))
+        except:
+            print(f"Erreur lors du chargement de l'astéroïde {self.name}")
+
+        return fig
+    
+    def load_neos(self, ip_min:str, ps_min:str, limit:int)->list:
         try:
             url = f'https://ssd-api.jpl.nasa.gov/sentry.api?ip-min={ip_min}&ps-min={ps_min}'
             r = requests.get(url)
@@ -50,11 +72,21 @@ class NEOs:
             print(f'Erreur lors du chargement des NEOs: {e}')
             return []
         neos = []
+        if limit > 0:
+            data = data[:limit]
         for neo in data:
             n = NEOs()
             n.setattributes(neo['des'], neo['ps_cum'], neo['ts_max'], neo['range'], neo['last_obs'], neo['diameter'], neo['ip'])
             neos.append(n)
         return neos
     
-    def get_orbite_date_range(self):
-        pass
+    def get_orbite_date_range(self)->str:
+        try:
+            url = f'https://ssd-api.jpl.nasa.gov/sbdb.api?des={self.name}'
+            r = requests.get(url)
+            data = r.json()
+            orbit_element = pd.DataFrame(data['orbit']['elements'])
+            return int(orbit_element[orbit_element['title'] == 'sidereal orbital period']['value'].iloc[0])
+        except Exception as e:
+            print(f'Erreur lors du chargement des données du NEO {self.name}: {e}')
+            return 1
