@@ -15,6 +15,8 @@ fig = go.Figure()
 
 fig = load_solar_system(fig)
 
+fig.layout.uirevision = True
+
 neo_class = NEOs()
 neos = neo_class.load_neos(1e-6, -4, 5)
 
