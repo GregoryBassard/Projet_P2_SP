@@ -115,3 +115,39 @@ def get_neos2(ip_min:str, ps_min:str)->pd.DataFrame:
     data = r.json()['data']
     df = pd.DataFrame(data)
     return df
+
+# Create 3D Axes
+def create_3d_axes(fig:go.Figure, axis_length:int, color:str)->go.Figure:
+    # X-axis, Y-axis, Z-axis (All Yellow)
+        
+    fig.add_trace(    
+        go.Scatter3d(
+            x=[-axis_length, axis_length], y=[0, 0], z=[0, 0],
+            mode='lines',
+            line=dict(color=color, width=1),
+            marker= dict(opacity=0.6),
+            name='X-Axis'
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter3d(
+            x=[0, 0], y=[-axis_length, axis_length], z=[0, 0],
+            mode='lines',
+            line=dict(color=color, width=1),
+            marker= dict(opacity=0.6),
+            name='Y-Axis'
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter3d(
+            x=[0, 0], y=[0, 0], z=[-axis_length, axis_length],
+            mode='lines',
+            line=dict(color=color, width=1),
+            marker= dict(opacity=0.6),
+            name='Z-Axis'
+        )
+    )
+
+    return fig
