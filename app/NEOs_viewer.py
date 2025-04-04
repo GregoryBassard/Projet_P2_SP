@@ -10,6 +10,7 @@ from NEOs import NEOs
 import time
 
 last_click_timestamp = 0
+last_neo_name = ''
 
 fig = go.Figure()
 
@@ -18,7 +19,7 @@ fig = load_solar_system(fig)
 fig.layout.uirevision = True
 
 neo_class = NEOs()
-neos = neo_class.load_neos(1e-6, -4, 5)
+neos = neo_class.load_neos(1e-6, -4, 10)
 
 for neo in neos:
     # print(neo.name)
@@ -29,15 +30,15 @@ fig.update_layout(
     title='Orbite des Planètes autour du Soleil',
     template='plotly_dark',
     scene=dict(
-        xaxis=dict(range=[-500000000, 500000000], visible=False),
-        yaxis=dict(range=[-500000000, 500000000], visible=False),
-        zaxis=dict(range=[-500000000, 500000000], visible=False)
+        xaxis=dict(visible=False),
+        yaxis=dict(visible=False),
+        zaxis=dict(visible=False)
     )
 )
 
 # Create 3D Axes
 def create_3d_axes():
-    axis_length = 500000000  # Length of the axes to match the scale of the solar system
+    axis_length = 800000000  # Length of the axes to match the scale of the solar system
 
     # X-axis, Y-axis, Z-axis (All Yellow)
     x_axis = go.Scatter3d(
@@ -87,16 +88,22 @@ app.layout = html.Div([
 )
 def update_orbital_visibility(click_data):
     global last_click_timestamp
+    global last_neo_name
 
     if click_data:
         current_time = time.time()
-        
-        if current_time - last_click_timestamp < 0.5:
+        name = fig.data[click_data['points'][0]['curveNumber']].name
+
+        if '(neo)' not in name:
             return dash.no_update
+        
+        if last_neo_name == name:
+            if current_time - last_click_timestamp < 0.5:
+                return dash.no_update
 
         last_click_timestamp = current_time
+        last_neo_name = name
         
-        name = fig.data[click_data['points'][0]['curveNumber']].name
         for trace in fig.data:
             if trace.name == f'Orbite {name}':  
                 trace.visible = not trace.visible
