@@ -1,16 +1,15 @@
-from skyfield.api import load
 import plotly.graph_objects as go
-import numpy as np
 import dash
-import pandas as pd
 from dash import dcc, html
 from dash.dependencies import Input, Output
 from utils import load_solar_system, create_3d_axes
-from NEOs import NEOs
+from NEOs import NEOs, NEOsDisplayThread
 import time
 
 last_click_timestamp = 0
 last_neo_name = ''
+time_current = time.time()
+time_total = time.time()
 
 fig = go.Figure()
 
@@ -29,12 +28,27 @@ fig = load_solar_system(fig)
 fig.layout.uirevision = True
 
 neo_class = NEOs()
-neos = neo_class.load_neos(1e-6, -4, 10)
+print(f'loading layout setup time : {round(time.time()-time_current, 3)}s')
+time_current = time.time()
 
+neos = neo_class.load_neos(1e-6, -4, 0)
+print(f'loading neos from api time : {round(time.time()-time_current, 3)}s')
+time_current = time.time()
+
+threads = []
 for neo in neos:
-    # print(neo.name)
-    fig = neo.display(fig)
-    fig = neo.display_orbital_path(fig)
+    threads.append(NEOsDisplayThread(neo, 'Orbital'))
+    threads.append(NEOsDisplayThread(neo, 'Object'))
+
+for thread in threads:
+    thread.start()
+
+for thread in threads:
+    thread.join()
+    fig.add_trace(thread.result)
+
+print(f'displaying neos time : {round(time.time()-time_current, 3)}s')
+time_current = time.time()
 
 fig = create_3d_axes(fig, 800000000, 'yellow')
 
@@ -47,6 +61,8 @@ app.layout = html.Div([
         style={'height': '90vh'}
     )
 ])
+print(f'loading dash app time : {round(time.time()-time_current, 3)}s')
+print(f'total loading app time : {round(time.time()-time_total, 3)}s')
 
 @app.callback(
     Output('solar-system', 'figure'),

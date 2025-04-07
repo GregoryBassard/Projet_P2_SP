@@ -4,6 +4,8 @@ from astroquery.jplhorizons import Horizons
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
+from threading  import Thread
+from time import sleep
 
 class NEOs:
     def __init__(self):
@@ -21,7 +23,7 @@ class NEOs:
         self.diameter = diameter
         self.ip = ip
     
-    def display(self, fig:go.Figure)->go.Figure:
+    def display(self)->go.Scatter3d:
         now = datetime.now()
         stop = now + timedelta(days=1)
         
@@ -29,19 +31,19 @@ class NEOs:
             obj = Horizons(id=self.name, location='500@10', epochs={'start': now.strftime('%Y-%m-%d'), 'stop': stop.strftime('%Y-%m-%d'), 'step': '1d'})
             vectors = obj.vectors()
 
-            fig.add_trace(go.Scatter3d(
+            trace = go.Scatter3d(
                 x=[vectors['x'][0]*1.496e+8], y=[vectors['y'][0]*1.496e+8], z=[vectors['z'][0]*1.496e+8],
                 mode='markers+text',
                 marker=dict(size=4, color='white', opacity=0.9),
                 text=f'{self.name} (neo)',
                 name=f'{self.name} (neo)'
-            ))
+            )
         except:
             print(f"Erreur lors du chargement de l'astéroïde {self.name}")
 
-        return fig
+        return trace
     
-    def display_orbital_path(self, fig:go.Figure)->go.Figure:
+    def display_orbital_path(self)->go.Scatter3d:
         now = datetime.now()
         stop = now + timedelta(days=self.get_orbite_date_range())
         
@@ -50,18 +52,18 @@ class NEOs:
 
             vectors = obj.vectors()
 
-            fig.add_trace(go.Scatter3d(
+            trace = go.Scatter3d(
                 x=vectors['x']*1.496e+8, y=vectors['y']*1.496e+8, z=vectors['z']*1.496e+8,
                 mode='lines',
                 marker=dict(size=1, color='white', opacity=0.9),
                 line=dict(width=2),
                 visible=False,
                 name=f'Orbite {self.name} (neo)'
-            ))
+            )
         except:
             print(f"Erreur lors du chargement de l'astéroïde {self.name}")
 
-        return fig
+        return trace
     
     def load_neos(self, ip_min:str, ps_min:str, limit:int)->list:
         try:
@@ -84,9 +86,27 @@ class NEOs:
         try:
             url = f'https://ssd-api.jpl.nasa.gov/sbdb.api?des={self.name}'
             r = requests.get(url)
+            while r.status_code == 503:
+                print(f'API Service Unavailable  (NEO {self.name}): retry in 500ms')
+                sleep(0.5)
+                r = requests.get(url)
+
             data = r.json()
-            orbit_element = pd.DataFrame(data['orbit']['elements'])
-            return int(orbit_element[orbit_element['title'] == 'sidereal orbital period']['value'].iloc[0])
         except Exception as e:
             print(f'Erreur lors du chargement des données du NEO {self.name}: {e}')
-            return 1
+        
+        orbit_element = pd.DataFrame(data['orbit']['elements'])
+        return int(orbit_element[orbit_element['title'] == 'sidereal orbital period']['value'].iloc[0])
+
+class NEOsDisplayThread(Thread):
+    def __init__(self, neo:NEOs, methode:str):
+        Thread.__init__(self)
+        self.neo = neo
+        self.methode = methode
+        self.result = None
+    
+    def run(self) -> None:
+        if self.methode == 'Orbital':
+            self.result = self.neo.display_orbital_path()
+        elif self.methode == 'Object':
+            self.result = self.neo.display()
