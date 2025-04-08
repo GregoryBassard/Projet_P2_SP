@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 from astroquery.jplhorizons import Horizons
 import requests
 import pandas as pd
+from NEOs import NEOsDisplayThread
 
 def load_solar_system(fig:go.Figure)->go.Figure:
     # Charger les éphémérides DE440
@@ -151,3 +152,25 @@ def create_3d_axes(fig:go.Figure, axis_length:int, color:str)->go.Figure:
     )
 
     return fig
+
+def display_neos_with_thread(neos:list):
+    threads = []
+    for neo in neos:
+        threads.append(NEOsDisplayThread(neo, 'Object'))
+        threads.append(NEOsDisplayThread(neo, 'Orbital'))
+
+    for thread in threads:
+        thread.start()
+
+    for thread in threads:
+        thread.join()
+        if thread.result is not None:
+            return thread.result
+        else:
+            print(f"trace error neo : {thread.neo.name}")
+
+def display_neos_without_thread(neos:list):
+    for neo in neos:
+        yield neo.display()
+        yield neo.display_orbital_path()
+

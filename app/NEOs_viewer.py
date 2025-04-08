@@ -2,13 +2,14 @@ import plotly.graph_objects as go
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
-from utils import load_solar_system, create_3d_axes
+from utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
 from NEOs import NEOs, NEOsDisplayThread
 import time
 
+USE_THREAD = True
+
 last_click_timestamp = 0
 last_neo_name = ''
-time_current = time.time()
 time_total = time.time()
 
 fig = go.Figure()
@@ -28,30 +29,17 @@ fig = load_solar_system(fig)
 fig.layout.uirevision = True
 
 neo_class = NEOs()
-print(f'loading layout setup time : {round(time.time()-time_current, 3)}s')
 time_current = time.time()
 
 neos = neo_class.load_neos(1e-6, -4, 0)
-print(f'loading neos from api time : {round(time.time()-time_current, 3)}s')
 time_current = time.time()
 
-threads = []
-for neo in neos:
-    threads.append(NEOsDisplayThread(neo, 'Object'))
-    threads.append(NEOsDisplayThread(neo, 'Orbital'))
+if USE_THREAD:
+    display_neos_with_thread(neos)
+else:
+    for trace in display_neos_without_thread(neos):
+        fig.add_trace(trace)
 
-for thread in threads:
-    thread.start()
-
-for thread in threads:
-    thread.join()
-    if thread.result is not None:
-        fig.add_trace(thread.result)
-    else:
-        print(f"trace error neo : {thread.neo.name}")
-    
-
-print(f'displaying neos time : {round(time.time()-time_current, 3)}s')
 time_current = time.time()
 
 fig = create_3d_axes(fig, 800000000, 'yellow')
@@ -65,7 +53,6 @@ app.layout = html.Div([
         style={'height': '90vh'}
     )
 ])
-print(f'loading dash app time : {round(time.time()-time_current, 3)}s')
 print(f'total loading app time : {round(time.time()-time_total, 3)}s')
 
 @app.callback(
@@ -97,4 +84,4 @@ def update_orbital_visibility(click_data):
     return fig
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
