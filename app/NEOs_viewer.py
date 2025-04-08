@@ -37,15 +37,17 @@ time_current = time.time()
 
 threads = []
 for neo in neos:
-    threads.append(NEOsDisplayThread(neo, 'Orbital'))
     threads.append(NEOsDisplayThread(neo, 'Object'))
+    threads.append(NEOsDisplayThread(neo, 'Orbital'))
 
 for thread in threads:
     thread.start()
 
 for thread in threads:
     thread.join()
-    fig.add_trace(thread.result)
+    trace = thread.result
+    if trace is not None:
+        fig.add_trace(trace)
 
 print(f'displaying neos time : {round(time.time()-time_current, 3)}s')
 time_current = time.time()

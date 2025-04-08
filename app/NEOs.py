@@ -26,7 +26,6 @@ class NEOs:
     def display(self)->go.Scatter3d:
         now = datetime.now()
         stop = now + timedelta(days=1)
-        
         try:
             obj = Horizons(id=self.name, location='500@10', epochs={'start': now.strftime('%Y-%m-%d'), 'stop': stop.strftime('%Y-%m-%d'), 'step': '1d'})
             vectors = obj.vectors()
@@ -38,10 +37,10 @@ class NEOs:
                 text=f'{self.name} (neo)',
                 name=f'{self.name} (neo)'
             )
+            return trace
         except:
-            print(f"Erreur lors du chargement de l'astéroïde {self.name}")
-
-        return trace
+            print(f"Erreur lors du chargement du NEO: {self.name}")
+        return None
     
     def display_orbital_path(self)->go.Scatter3d:
         now = datetime.now()
@@ -60,10 +59,10 @@ class NEOs:
                 visible=False,
                 name=f'Orbite {self.name} (neo)'
             )
+            return trace
         except:
             print(f"Erreur lors du chargement de l'astéroïde {self.name}")
-
-        return trace
+        return None
     
     def load_neos(self, ip_min:str, ps_min:str, limit:int)->list:
         try:
