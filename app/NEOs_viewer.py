@@ -45,9 +45,11 @@ for thread in threads:
 
 for thread in threads:
     thread.join()
-    trace = thread.result
-    if trace is not None:
-        fig.add_trace(trace)
+    if thread.result is not None:
+        fig.add_trace(thread.result)
+    else:
+        print(f"trace error neo : {thread.neo.name}")
+    
 
 print(f'displaying neos time : {round(time.time()-time_current, 3)}s')
 time_current = time.time()
