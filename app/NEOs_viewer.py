@@ -31,11 +31,12 @@ fig.layout.uirevision = True
 neo_class = NEOs()
 time_current = time.time()
 
-neos = neo_class.load_neos(1e-6, -4, 0)
+neos = neo_class.load_neos(1e-6, -4, 15)
 time_current = time.time()
 
 if USE_THREAD:
-    display_neos_with_thread(neos)
+    for trace in display_neos_with_thread(neos):
+        fig.add_trace(trace)
 else:
     for trace in display_neos_without_thread(neos):
         fig.add_trace(trace)
@@ -84,4 +85,4 @@ def update_orbital_visibility(click_data):
     return fig
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True, port=8050, use_reloader=False)

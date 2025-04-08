@@ -165,7 +165,7 @@ def display_neos_with_thread(neos:list):
     for thread in threads:
         thread.join()
         if thread.result is not None:
-            return thread.result
+            yield thread.result
         else:
             print(f"trace error neo : {thread.neo.name}")
 
