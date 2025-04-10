@@ -6,7 +6,7 @@ from utils import load_solar_system, create_3d_axes, display_neos_with_thread, d
 from NEOs import NEOs
 import time
 
-USE_THREAD = True
+USE_THREAD = False
 
 last_click_timestamp = 0
 last_neo_name = ''
@@ -32,7 +32,7 @@ fig.layout.uirevision = True
 neo_class = NEOs()
 time_current = time.time()
 
-neos = neo_class.load_neos(1e-6, -4, 15)
+neos = neo_class.load_neos(1e-6, -4, 0)
 time_current = time.time()
 
 if USE_THREAD:
@@ -53,13 +53,58 @@ fig._config = config
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
-    dcc.Graph(
-        responsive=True,
-        id='solar-system',
-        figure=fig,
-        style={'height': '90vh'},
-    )
+    html.Div([
+        html.Div("Filter", style={
+            "border": "2px solid black",
+            "width": "15%",
+            "height": "100vh",
+            "fontSize": "2rem",
+            "textAlign": "center",
+            "paddingTop": "1rem",
+        }),
+
+        html.Div([
+            dcc.Graph(
+                id='solar-system',
+                figure=fig,
+                style={"height": "100%", "width": "100%"},
+                config={"responsive": True}
+            )
+        ], style={
+            "border": "2px solid black",
+            "width": "55%",
+            "height": "100vh",
+            "display": "flex",
+            "flexDirection": "column"
+        }),
+
+        html.Div([
+            html.Div("CLICKED NEO INFO", style={
+                "border": "2px solid black",
+                "height": "50%",
+                "fontSize": "2rem",
+                "textAlign": "center",
+                "paddingTop": "2rem"
+            }),
+            html.Div("3D VI FOR CLICKED NEO", style={
+                "border": "2px solid black",
+                "height": "50%",
+                "fontSize": "2rem",
+                "textAlign": "center",
+                "paddingTop": "2rem"
+            }),
+        ], style={
+            "width": "30%",
+            "height": "100vh",
+            "display": "flex",
+            "flexDirection": "column"
+        })
+    ], style={
+        "display": "flex",
+        "flexDirection": "row"
+    })
 ])
+
 print(f'total loading app time : {round(time.time()-time_total, 3)}s')
 
 @app.callback(
