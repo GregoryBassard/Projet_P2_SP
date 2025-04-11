@@ -9,7 +9,6 @@ import time
 
 USE_THREAD = True
 
-selected_neo_name = ''
 time_total = time.time()
 
 fig = go.Figure()
@@ -58,19 +57,23 @@ print(f'total loading app time : {round(time.time()-time_total, 3)}s')
 
 @app.callback(
     Output('solar-system', 'figure'),
+    Output('neo-name', 'children'),
+    Output('neo-ps', 'children'),
+    Output('neo-ts', 'children'),
+    Output('neo-range', 'children'),
+    Output('last-obs', 'children'),
+    Output('neo-diameter', 'children'),
+    Output('neo-ip', 'children'),
     Input('solar-system', 'clickData')
 )
 def update_orbital_visibility(click_data):
     global selected_neo_name
 
     if click_data:
-        current_time = time.time()
         name = fig.data[click_data['points'][0]['curveNumber']].name
 
         if '(neo)' not in name:
             return dash.no_update
-
-        selected_neo_name = name
         
         for trace in fig.data:
             if name in trace.name:
@@ -89,8 +92,18 @@ def update_orbital_visibility(click_data):
                     trace.marker.size = 4
                     trace.textfont.size = 12
                     trace.textfont.color = 'lightgray'
+        for neo in neos:
+            if neo.name in name:
+                neo_name = neo.name
+                ps = neo.ps
+                ts = neo.ts
+                range = neo.range
+                last_obs = neo.last_obs
+                diameter = neo.diameter
+                ip = neo.ip
 
-    return fig
+        return fig, f"Name: {neo_name}", f"Palermo Scale: {ps}", f"Torino Scale: {ts}", f"Range: {range}", f"Last Obs: {last_obs}", f"Diameter: {diameter}", f"Impact probability: {ip}"
+    return fig, None, None, None, None, None, None, None
 
 if __name__ == '__main__':
     app.run(debug=False, port=8050, use_reloader=False)

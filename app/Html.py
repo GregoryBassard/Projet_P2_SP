@@ -28,16 +28,24 @@ def create_layout(neos_viewer_fig):
             }),
 
             html.Div([
-                html.Div("CLICKED NEO INFO", style={
-                    "border": "2px solid black",
-                    "height": "50%",
-                    "fontSize": "2rem",
-                    "textAlign": "center",
-                    "paddingTop": "2rem"
-                }),
+                html.Div(
+                    children=[
+                        html.H1("Name: ", id="neo-name"),
+                        html.H3("Palermo Scale: ", id="neo-ps", style={"paddingTop" : "0.5rem"}),
+                        html.H3("Torino Scale: ", id="neo-ts", style={"paddingTop" : "0.5rem"}),
+                        html.H3("Range: ", id="neo-range", style={"paddingTop" : "0.5rem"}),
+                        html.H3("Last Obs: ", id="last-obs", style={"paddingTop" : "0.5rem"}),
+                        html.H3("Diameter: ", id="neo-diameter", style={"paddingTop" : "0.5rem"}),
+                        html.H3("Impact probability: ", id="neo-ip", style={"paddingTop" : "0.5rem"})
+                    ],
+                    style={
+                        "border": "2px solid black",
+                        "height": "35%",
+                    }
+                ),
                 html.Div("3D VI FOR CLICKED NEO", style={
                     "border": "2px solid black",
-                    "height": "50%",
+                    "height": "65%",
                     "fontSize": "2rem",
                     "textAlign": "center",
                     "paddingTop": "2rem"
