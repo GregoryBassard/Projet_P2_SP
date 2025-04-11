@@ -6,7 +6,7 @@ from utils import load_solar_system, create_3d_axes, display_neos_with_thread, d
 from NEOs import NEOs, NEOsDisplayThread
 import time
 
-USE_THREAD = True
+USE_THREAD = False
 
 last_click_timestamp = 0
 last_neo_name = ''
