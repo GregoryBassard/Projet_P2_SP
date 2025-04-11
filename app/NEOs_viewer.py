@@ -9,8 +9,7 @@ import time
 
 USE_THREAD = True
 
-last_click_timestamp = 0
-last_neo_name = ''
+selected_neo_name = ''
 time_total = time.time()
 
 fig = go.Figure()
@@ -62,8 +61,7 @@ print(f'total loading app time : {round(time.time()-time_total, 3)}s')
     Input('solar-system', 'clickData')
 )
 def update_orbital_visibility(click_data):
-    global last_click_timestamp
-    global last_neo_name
+    global selected_neo_name
 
     if click_data:
         current_time = time.time()
@@ -71,17 +69,26 @@ def update_orbital_visibility(click_data):
 
         if '(neo)' not in name:
             return dash.no_update
-        
-        if last_neo_name == name:
-            if current_time - last_click_timestamp < 0.5:
-                return dash.no_update
 
-        last_click_timestamp = current_time
-        last_neo_name = name
+        selected_neo_name = name
         
         for trace in fig.data:
-            if trace.name == f'Orbite {name}':  
-                trace.visible = not trace.visible
+            if name in trace.name:
+                if 'Orbite ' in trace.name:
+                    trace.visible = True
+                else:
+                    trace.marker.color = 'white'
+                    trace.marker.size = 8
+                    trace.textfont.size = 16
+                    trace.textfont.color = 'white'
+            elif '(neo)' in trace.name:
+                if 'Orbite ' in trace.name:
+                    trace.visible = False
+                else:
+                    trace.marker.color = 'gray'
+                    trace.marker.size = 4
+                    trace.textfont.size = 12
+                    trace.textfont.color = 'lightgray'
 
     return fig
 
