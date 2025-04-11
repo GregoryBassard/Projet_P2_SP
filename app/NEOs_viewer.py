@@ -4,9 +4,10 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 from utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
 from NEOs import NEOs
+from Html import create_layout
 import time
 
-USE_THREAD = False
+USE_THREAD = True
 
 last_click_timestamp = 0
 last_neo_name = ''
@@ -52,58 +53,7 @@ fig._config = config
 
 app = dash.Dash(__name__)
 
-app.layout = html.Div([
-    html.Div([
-        html.Div("Filter", style={
-            "border": "2px solid black",
-            "width": "15%",
-            "height": "100vh",
-            "fontSize": "2rem",
-            "textAlign": "center",
-            "paddingTop": "1rem",
-        }),
-
-        html.Div([
-            dcc.Graph(
-                id='solar-system',
-                figure=fig,
-                style={"height": "100%", "width": "100%"},
-                config={"responsive": True}
-            )
-        ], style={
-            "border": "2px solid black",
-            "width": "55%",
-            "height": "100vh",
-            "display": "flex",
-            "flexDirection": "column"
-        }),
-
-        html.Div([
-            html.Div("CLICKED NEO INFO", style={
-                "border": "2px solid black",
-                "height": "50%",
-                "fontSize": "2rem",
-                "textAlign": "center",
-                "paddingTop": "2rem"
-            }),
-            html.Div("3D VI FOR CLICKED NEO", style={
-                "border": "2px solid black",
-                "height": "50%",
-                "fontSize": "2rem",
-                "textAlign": "center",
-                "paddingTop": "2rem"
-            }),
-        ], style={
-            "width": "30%",
-            "height": "100vh",
-            "display": "flex",
-            "flexDirection": "column"
-        })
-    ], style={
-        "display": "flex",
-        "flexDirection": "row"
-    })
-])
+app.layout = create_layout(fig)
 
 print(f'total loading app time : {round(time.time()-time_total, 3)}s')
 
@@ -136,4 +86,4 @@ def update_orbital_visibility(click_data):
     return fig
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8050, use_reloader=False)
+    app.run(debug=False, port=8050, use_reloader=False)
