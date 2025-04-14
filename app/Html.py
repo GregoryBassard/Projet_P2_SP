@@ -14,7 +14,7 @@ def create_layout(neos_viewer_fig):
 
             html.Div([
                 dcc.Graph(
-                    id='solar-system',
+                    id="solar-system",
                     figure=neos_viewer_fig,
                     style={"height": "100%", "width": "100%"},
                     config={"responsive": True}
