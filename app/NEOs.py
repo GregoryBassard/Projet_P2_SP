@@ -31,7 +31,7 @@ class NEOs:
             vectors = obj.vectors()
 
             trace = go.Scatter3d(
-                x=[vectors["x"][0]*1.496e+8], y=[vectors["y"][0]*1.496e+8], z=[vectors["z"][0]*1.496e+8],
+                x=[vectors['x'][0]*1.496e+8], y=[vectors['y'][0]*1.496e+8], z=[vectors['z'][0]*1.496e+8],
                 mode="markers+text",
                 marker=dict(size=4, color="gray", opacity=0.9),
                 text=f"{self.name} (neo)",
@@ -53,7 +53,7 @@ class NEOs:
             vectors = obj.vectors()
 
             trace = go.Scatter3d(
-                x=vectors["x"]*1.496e+8, y=vectors["y"]*1.496e+8, z=vectors["z"]*1.496e+8,
+                x=vectors['x']*1.496e+8, y=vectors['y']*1.496e+8, z=vectors['z']*1.496e+8,
                 mode="lines",
                 line=dict(width=2, color="white"),
                 visible=False,
@@ -68,7 +68,7 @@ class NEOs:
         try:
             url = f"https://ssd-api.jpl.nasa.gov/sentry.api?ip-min={ip_min}&ps-min={ps_min}"
             r = requests.get(url)
-            data = r.json()["data"]
+            data = r.json()['data']
         except Exception as e:
             print(f"Erreur lors du chargement des NEOs: {e}")
             return []
@@ -77,7 +77,7 @@ class NEOs:
             data = data[:limit]
         for neo in data:
             n = NEOs()
-            n.setattributes(neo["des"], neo["ps_cum"], neo["ts_max"], neo["range"], neo["last_obs"], neo["diameter"], neo["ip"])
+            n.setattributes(neo['des'], neo['ps_cum'], neo['ts_max'], neo['range'], neo['last_obs'], neo['diameter'], neo['ip'])
             neos.append(n)
         return neos
     
@@ -94,8 +94,8 @@ class NEOs:
         except Exception as e:
             print(f"Erreur lors du chargement des données du NEO {self.name}: {e}")
         
-        orbit_element = pd.DataFrame(data["orbit"]["elements"])
-        return int(orbit_element[orbit_element["title"] == "sidereal orbital period"]["value"].iloc[0])
+        orbit_element = pd.DataFrame(data['orbit']['elements'])
+        return int(orbit_element[orbit_element['title'] == 'sidereal orbital period']['value'].iloc[0])
 
 class NEOsDisplayThread(Thread):
     def __init__(self, neo:NEOs, methode:str):
