@@ -107,5 +107,4 @@ def update_orbital_visibility(click_data):
 
 server = app.server
 
-if __name__ == "__main__":
-    app.run(debug=False, port=8050, use_reloader=False)
+app.run(debug=False, port=8050, use_reloader=False)
