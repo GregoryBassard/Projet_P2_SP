@@ -82,7 +82,7 @@ def load_asteroid(fig:go.Figure, asteroid_id:str)->go.Figure:
             name=asteroid_id
         ))
     except:
-        print(f"Erreur lors du chargement de l"astéroïde {asteroid_id}")
+        print(f"Erreur lors du chargement de lastéroïde {asteroid_id}")
 
     return fig
 

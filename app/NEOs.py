@@ -61,7 +61,7 @@ class NEOs:
             )
             return trace
         except:
-            print(f"Erreur lors du chargement de l"astéroïde {self.name}")
+            print(f"Erreur lors du chargement du NEO {self.name}")
         return None
     
     def load_neos(self, ip_min:str, ps_min:str, limit:int)->list:
