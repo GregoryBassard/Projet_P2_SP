@@ -10,9 +10,9 @@ def load_solar_system(fig:go.Figure)->go.Figure:
     kernels = load("de440.bsp")
 
     planets_data = {
-        "name": ['Mercure", "Vénus", "Terre", "Mars", "Jupiter", "Saturne", "Uranus", "Neptune'],
+        "name": ["Mercure", "Vénus", "Terre", "Mars", "Jupiter", "Saturne", "Uranus", "Neptune"],
         "SPICE_ID": [1, 2, 3, 4, 5, 6, 7, 8, 9, 301],
-        "color": ['gray", "orange", "blue", "red", "rosybrown", "sandybrown", "cyan", "blue", "gray", "white'],
+        "color": ["gray", "orange", "blue", "red", "rosybrown", "sandybrown", "cyan", "blue", "gray", "white"],
         "time": [88, 225, 365, 687, 4333, 10759, 30687, 60190, 90560, 28]
     }
 
@@ -23,7 +23,7 @@ def load_solar_system(fig:go.Figure)->go.Figure:
     ts = load.timescale()
     time_now = ts.now()
 
-    planet_to_show = ['Mercure", "Vénus", "Terre", "Mars']#, "Jupiter", "Saturne", "Uranus", "Neptune", "Pluton']
+    planet_to_show = ["Mercure", "Vénus", "Terre", "Mars"]#, "Jupiter", "Saturne", "Uranus", "Neptune", "Pluton']
 
     for i in range(len(planets_data)):
         if planets_data['name'][i] not in planet_to_show:
