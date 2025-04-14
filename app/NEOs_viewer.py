@@ -6,6 +6,7 @@ from app.utils import load_solar_system, create_3d_axes, display_neos_with_threa
 from app.NEOs import NEOs
 from app.Html import create_layout
 import time
+import os
 
 USE_THREAD = True
 
@@ -107,4 +108,5 @@ def update_orbital_visibility(click_data):
 
 server = app.server
 
-app.run(debug=True)
+port = int(os.environ.get("PORT", 8050))
+app.run(debug=False, host="0.0.0.0", port=port, use_reloader=False)
