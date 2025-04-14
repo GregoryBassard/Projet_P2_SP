@@ -15,7 +15,7 @@ time_total = time.time()
 fig = go.Figure()
 
 fig.update_layout(
-    title="Orbite des Planètes autour du Soleil",
+    title="Orbite des Planetes autour du Soleil",
     template="plotly_dark",
     showlegend=False,
     scene=dict(
