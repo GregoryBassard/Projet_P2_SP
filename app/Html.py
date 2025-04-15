@@ -24,7 +24,7 @@ def create_layout(neos_viewer_fig):
                 "width": "50%",
                 "height": "100vh",
                 "display": "flex",
-                "flexDirection": "column"
+                "flexDirection": "column",
             }),
 
             html.Div([
@@ -41,6 +41,9 @@ def create_layout(neos_viewer_fig):
                     style={
                         "border": "2px solid black",
                         "height": "35%",
+                        "overflowY": "auto",
+                        "padding": "0.5rem",
+                        "boxSizing": "border-box" 
                     }
                 ),
                 html.Div("3D VI FOR CLICKED NEO", style={

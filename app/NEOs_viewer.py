@@ -7,7 +7,7 @@ from NEOs import NEOs
 from Html import create_layout
 import time
 
-USE_THREAD = True
+USE_THREAD = False
 
 time_total = time.time()
 
