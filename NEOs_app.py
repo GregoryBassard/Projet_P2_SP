@@ -8,7 +8,7 @@ from app_import.Html import create_layout
 import time
 import os
 
-USE_THREAD = False
+USE_THREAD = True
 
 time_total = time.time()
 
@@ -59,6 +59,9 @@ print(f"total loading app time : {round(time.time()-time_total, 3)}s")
 @app.callback(
     Output("solar-system", "figure"),
     Output("neo-name", "children"),
+    Output("diameter-slider", "value"),
+    Output("sentry-toggle", "value"),
+    Output("observed-toggle", "value"),
     Output("neo-ps", "children"),
     Output("neo-ts", "children"),
     Output("neo-range", "children"),
@@ -105,6 +108,8 @@ def update_orbital_visibility(click_data):
 
         return fig, f"Name: {neo_name}", f"Palermo Scale: {ps}", f"Torino Scale: {ts}", f"Range: {range}", f"Last Obs: {last_obs}", f"Diameter: {diameter}", f"Impact probability: {ip}"
     return fig, f"Name: N/A", f"Palermo Scale: N/A", f"Torino Scale: N/A", f"Range: N/A", f"Last Obs: N/A", f"Diameter: N/A", f"Impact probability: N/A"
+
+
 
 server = app.server
 

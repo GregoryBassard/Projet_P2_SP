@@ -22,13 +22,13 @@ def create_layout(neos_viewer_fig):
 
             html.Br(),
 
-            html.Label("Hazardous Only", style={"paddingTop": "2rem", "display": "block", "fontWeight": "bold"}),
+            html.Label("Sentry Only", style={"paddingTop": "2rem", "display": "block", "fontWeight": "bold"}),
             dcc.Checklist(
                 options=[
                     {"label": "Yes", "value": "yes"}
                 ],
                 value=[],
-                id="hazardous-toggle",
+                id="sentry-toggle",
                 inputStyle={"marginRight": "0.5rem", "marginLeft": "0.5rem"}
             ),
 
