@@ -103,7 +103,7 @@ def update_orbital_visibility(click_data):
                 ip = neo.ip
 
         return fig, f"Name: {neo_name}", f"Palermo Scale: {ps}", f"Torino Scale: {ts}", f"Range: {range}", f"Last Obs: {last_obs}", f"Diameter: {diameter}", f"Impact probability: {ip}"
-    return fig, None, None, None, None, None, None, None
+    return fig, f"Name: N/A", f"Palermo Scale: N/A", f"Torino Scale: N/A", f"Range: N/A", f"Last Obs: N/A", f"Diameter: N/A", f"Impact probability: N/A"
 
 if __name__ == '__main__':
     app.run(debug=False, port=8050, use_reloader=False)
