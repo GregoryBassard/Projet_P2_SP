@@ -2,13 +2,13 @@ import plotly.graph_objects as go
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
-from app.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
-from app.NEOs import NEOs
-from app.Html import create_layout
+from app_import.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
+from app_import.NEOs import NEOs
+from app_import.Html import create_layout
 import time
 import os
 
-USE_THREAD = True
+USE_THREAD = False
 
 time_total = time.time()
 

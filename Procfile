@@ -1,1 +1,1 @@
-web: gunicorn app.NEOs_viewer:app
+web: gunicorn NEOs_app:app

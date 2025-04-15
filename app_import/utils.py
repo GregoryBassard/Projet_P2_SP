@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 from astroquery.jplhorizons import Horizons
 import requests
 import pandas as pd
-from app.NEOs import NEOsDisplayThread
+from .NEOs import NEOsDisplayThread
 
 def load_solar_system(fig:go.Figure)->go.Figure:
     # Charger les éphémérides DE440
