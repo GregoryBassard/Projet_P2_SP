@@ -14,7 +14,7 @@ def create_layout(neos_viewer_fig):
 
             html.Div([
                 dcc.Graph(
-                    id='solar-system',
+                    id="solar-system",
                     figure=neos_viewer_fig,
                     style={"height": "100%", "width": "100%"},
                     config={"responsive": True}
@@ -26,11 +26,10 @@ def create_layout(neos_viewer_fig):
                 "display": "flex",
                 "flexDirection": "column",
             }),
-
             html.Div([
                 html.Div(
                     children=[
-                        html.H1("Name: ", id="neo-name"),
+                        html.H1("Name: ", id="neo-name", style={"textAlign":"center"}),
                         html.H3("Palermo Scale: ", id="neo-ps", style={"paddingTop" : "0.5rem"}),
                         html.H3("Torino Scale: ", id="neo-ts", style={"paddingTop" : "0.5rem"}),
                         html.H3("Range: ", id="neo-range", style={"paddingTop" : "0.5rem"}),
