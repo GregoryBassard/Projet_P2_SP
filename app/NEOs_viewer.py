@@ -2,10 +2,11 @@ import plotly.graph_objects as go
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
-from utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
-from NEOs import NEOs
-from Html import create_layout
+from app.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
+from app.NEOs import NEOs
+from app.Html import create_layout
 import time
+import os
 
 USE_THREAD = True
 
@@ -14,8 +15,8 @@ time_total = time.time()
 fig = go.Figure()
 
 fig.update_layout(
-    title='Orbite des Planètes autour du Soleil',
-    template='plotly_dark',
+    title="Orbite des Planetes autour du Soleil",
+    template="plotly_dark",
     showlegend=False,
     scene=dict(
         xaxis=dict(visible=False),
@@ -43,9 +44,9 @@ else:
 
 time_current = time.time()
 
-fig = create_3d_axes(fig, 800000000, 'yellow')
+fig = create_3d_axes(fig, 800000000, "yellow")
 
-config = {'displayModeBar': False}
+config = {"displayModeBar": False}
 
 fig._config = config
 
@@ -53,45 +54,45 @@ app = dash.Dash(__name__)
 
 app.layout = create_layout(fig)
 
-print(f'total loading app time : {round(time.time()-time_total, 3)}s')
+print(f"total loading app time : {round(time.time()-time_total, 3)}s")
 
 @app.callback(
-    Output('solar-system', 'figure'),
-    Output('neo-name', 'children'),
-    Output('neo-ps', 'children'),
-    Output('neo-ts', 'children'),
-    Output('neo-range', 'children'),
-    Output('last-obs', 'children'),
-    Output('neo-diameter', 'children'),
-    Output('neo-ip', 'children'),
-    Input('solar-system', 'clickData')
+    Output("solar-system", "figure"),
+    Output("neo-name", "children"),
+    Output("neo-ps", "children"),
+    Output("neo-ts", "children"),
+    Output("neo-range", "children"),
+    Output("last-obs", "children"),
+    Output("neo-diameter", "children"),
+    Output("neo-ip", "children"),
+    Input("solar-system", "clickData")
 )
 def update_orbital_visibility(click_data):
     global selected_neo_name
 
     if click_data:
-        name = fig.data[click_data['points'][0]['curveNumber']].name
+        name = fig.data[click_data["points"][0]["curveNumber"]].name
 
-        if '(neo)' not in name:
+        if "(neo)" not in name:
             return dash.no_update
         
         for trace in fig.data:
             if name in trace.name:
-                if 'Orbite ' in trace.name:
+                if "Orbite " in trace.name:
                     trace.visible = True
                 else:
-                    trace.marker.color = 'white'
+                    trace.marker.color = "white"
                     trace.marker.size = 8
                     trace.textfont.size = 16
-                    trace.textfont.color = 'white'
-            elif '(neo)' in trace.name:
-                if 'Orbite ' in trace.name:
+                    trace.textfont.color = "white"
+            elif "(neo)" in trace.name:
+                if "Orbite " in trace.name:
                     trace.visible = False
                 else:
-                    trace.marker.color = 'gray'
+                    trace.marker.color = "gray"
                     trace.marker.size = 4
                     trace.textfont.size = 12
-                    trace.textfont.color = 'lightgray'
+                    trace.textfont.color = "lightgray"
         for neo in neos:
             if neo.name in name:
                 neo_name = neo.name
@@ -105,5 +106,7 @@ def update_orbital_visibility(click_data):
         return fig, f"Name: {neo_name}", f"Palermo Scale: {ps}", f"Torino Scale: {ts}", f"Range: {range}", f"Last Obs: {last_obs}", f"Diameter: {diameter}", f"Impact probability: {ip}"
     return fig, f"Name: N/A", f"Palermo Scale: N/A", f"Torino Scale: N/A", f"Range: N/A", f"Last Obs: N/A", f"Diameter: N/A", f"Impact probability: N/A"
 
-if __name__ == '__main__':
-    app.run(debug=False, port=8050, use_reloader=False)
+server = app.server
+
+port = int(os.environ.get("PORT", 8050))
+app.run(debug=False, host="0.0.0.0", port=port, use_reloader=False)

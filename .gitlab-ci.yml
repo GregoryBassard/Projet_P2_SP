@@ -1,0 +1,17 @@
+image: debian:bullseye
+
+stages:
+  - clone_and_push
+
+before_script:
+  - apt-get update && apt-get install -y git
+
+clone_and_push:
+  stage: clone_and_push
+  script:
+    - git clone --mirror $CI_REPOSITORY_URL repo
+    - cd repo
+    - git remote set-url origin https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_USERNAME/Projet_P2_SP.git
+    - git push --mirror origin
+  only:
+    - main
