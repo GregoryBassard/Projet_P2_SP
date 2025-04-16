@@ -3,12 +3,12 @@ import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
 from app_import.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
-from app_import.NEOs import NEOs
+from app_import.NEOs import NEOs, load_neos
 from app_import.Html import create_layout
 import time
 import os
 
-USE_THREAD = False
+USE_THREAD = bool(os.environ.get("USE_THREAD", True))
 
 time_total = time.time()
 
@@ -32,7 +32,7 @@ fig.layout.uirevision = True
 neo_class = NEOs()
 time_current = time.time()
 
-neos = neo_class.load_neos(1e-6, -4, 0)
+neos = load_neos(1e-6, -4, 0)
 time_current = time.time()
 
 if USE_THREAD:
@@ -59,12 +59,8 @@ print(f"total loading app time : {round(time.time()-time_total, 3)}s")
 @app.callback(
     Output("solar-system", "figure"),
     Output("neo-name", "children"),
-    Output("neo-ps", "children"),
-    Output("neo-ts", "children"),
-    Output("neo-range", "children"),
-    Output("last-obs", "children"),
-    Output("neo-diameter", "children"),
-    Output("neo-ip", "children"),
+    Output("neo-summary", "children"),
+    Output("neo-data", "children"),
     Input("solar-system", "clickData")
 )
 def update_orbital_visibility(click_data):
@@ -95,17 +91,32 @@ def update_orbital_visibility(click_data):
                     trace.textfont.color = "lightgray"
         for neo in neos:
             if neo.name in name:
-                neo_name = neo.name
-                ps = neo.ps
-                ts = neo.ts
-                range = neo.range
-                last_obs = neo.last_obs
-                diameter = neo.diameter
-                ip = neo.ip
+                neo.get_neo_data()
 
-        return fig, f"Name: {neo_name}", f"Palermo Scale: {ps}", f"Torino Scale: {ts}", f"Range: {range}", f"Last Obs: {last_obs}", f"Diameter: {diameter}", f"Impact probability: {ip}"
-    return fig, f"Name: N/A", f"Palermo Scale: N/A", f"Torino Scale: N/A", f"Range: N/A", f"Last Obs: N/A", f"Diameter: N/A", f"Impact probability: N/A"
+                summary = html.Table(
+                    [html.Tr([html.Td(key), html.Td(value)]) for key, value in neo.summary.items()],
+                    style={"border": "1px solid black", "width": "100%", "textAlign": "left"}
+                )
 
+                data = html.Table(
+                    [
+                        html.Tr([html.Th("Date"), html.Th("TS"), html.Th("Sigma VI"), html.Th("Energy"), html.Th("PS"), html.Th("IP")])
+                    ]
+                    + 
+                    [
+                        html.Tr([html.Td(entry["date"]), html.Td(entry["ts"]), html.Td(entry["sigma_vi"]), html.Td(entry["energy"]), html.Td(entry["ps"]), html.Td(entry["ip"])]) for entry in neo.data
+                    ],
+                    style={"border": "1px solid black", "width": "100%", "textAlign": "left"}
+                )
+
+                # for entry in neo.data:
+                #     row = html.Tr([html.Td(entry["date"]), html.Td(entry["ts"]), html.Td(entry["sigma_vi"]), html.Td(entry["energy"]), html.Td(entry["ps"]), html.Td(entry["ip"])])
+                #     # data.append(row)
+                #     data.children += [row]
+
+                return fig, f"Name: {name}", summary, data
+
+    return fig, "Name: N/A", html.H5("N/A"), html.H5("N/A")
 server = app.server
 
 port = int(os.environ.get("PORT", 8050))

@@ -10,18 +10,6 @@ from time import sleep
 class NEOs:
     def __init__(self):
         pass
-
-    def __str__(self):
-        return f"{self.name}\n\t - Palermo Scale: {self.ps}\n\t - Torino Scale: {self.ts}\n\t - Range: {self.range}\n\t - Last Obs: {self.last_obs}\n\t - Diameter: {self.diameter}\n\t - Impact probability: {self.ip}"
-    
-    def setattributes(self, name:str, ps:str, ts:str, range:str, last_obs:str, diameter:str, ip:str):
-        self.name = name
-        self.ps = ps
-        self.ts = ts
-        self.range = range
-        self.last_obs = last_obs
-        self.diameter = diameter
-        self.ip = ip
     
     def display(self)->go.Scatter3d:
         now = datetime.now()
@@ -64,23 +52,6 @@ class NEOs:
             print(f"Erreur lors du chargement du NEO {self.name}")
         return None
     
-    def load_neos(self, ip_min:str, ps_min:str, limit:int)->list:
-        try:
-            url = f"https://ssd-api.jpl.nasa.gov/sentry.api?ip-min={ip_min}&ps-min={ps_min}"
-            r = requests.get(url)
-            data = r.json()['data']
-        except Exception as e:
-            print(f"Erreur lors du chargement des NEOs: {e}")
-            return []
-        neos = []
-        if limit > 0:
-            data = data[:limit]
-        for neo in data:
-            n = NEOs()
-            n.setattributes(neo['des'], neo['ps_cum'], neo['ts_max'], neo['range'], neo['last_obs'], neo['diameter'], neo['ip'])
-            neos.append(n)
-        return neos
-    
     def get_orbite_date_range(self)->str:
         try:
             url = f"https://ssd-api.jpl.nasa.gov/sbdb.api?des={self.name}"
@@ -96,6 +67,23 @@ class NEOs:
         
         orbit_element = pd.DataFrame(data['orbit']['elements'])
         return int(orbit_element[orbit_element['title'] == 'sidereal orbital period']['value'].iloc[0])
+    
+    def get_neo_data(self)->dict:
+        try:
+            url = f"https://ssd-api.jpl.nasa.gov/sentry.api?des={self.name}"
+            r = requests.get(url)
+            while r.status_code == 503:
+                print(f"API Service Unavailable  (NEO {self.name}): retry in 500ms")
+                sleep(0.5)
+                r = requests.get(url)
+
+            data = r.json()
+        except Exception as e:
+            print(f"Erreur lors du chargement des données du NEO {self.name}: {e}")
+        
+        self.summary = data['summary']
+        self.data = data['data']
+        return data
 
 class NEOsDisplayThread(Thread):
     def __init__(self, neo:NEOs, methode:str):
@@ -109,3 +97,20 @@ class NEOsDisplayThread(Thread):
             self.result = self.neo.display_orbital_path()
         elif self.methode == "Object":
             self.result = self.neo.display()
+
+def load_neos(ip_min:str, ps_min:str, limit:int)->list:
+    try:
+        url = f"https://ssd-api.jpl.nasa.gov/sentry.api?ip-min={ip_min}&ps-min={ps_min}"
+        r = requests.get(url)
+        data = r.json()['data']
+    except Exception as e:
+        print(f"Erreur lors du chargement des NEOs: {e}")
+        return []
+    neos = []
+    if limit > 0:
+        data = data[:limit]
+    for neo in data:
+        n = NEOs()
+        n.name = neo['des']
+        neos.append(n)
+    return neos

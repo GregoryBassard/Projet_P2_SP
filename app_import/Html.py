@@ -30,12 +30,10 @@ def create_layout(neos_viewer_fig):
                 html.Div(
                     children=[
                         html.H1("Name: ", id="neo-name", style={"textAlign":"center"}),
-                        html.H3("Palermo Scale: ", id="neo-ps", style={"paddingTop" : "0.5rem"}),
-                        html.H3("Torino Scale: ", id="neo-ts", style={"paddingTop" : "0.5rem"}),
-                        html.H3("Range: ", id="neo-range", style={"paddingTop" : "0.5rem"}),
-                        html.H3("Last Obs: ", id="last-obs", style={"paddingTop" : "0.5rem"}),
-                        html.H3("Diameter: ", id="neo-diameter", style={"paddingTop" : "0.5rem"}),
-                        html.H3("Impact probability: ", id="neo-ip", style={"paddingTop" : "0.5rem"})
+                        html.H2("Summary: "),
+                        html.Div(id="neo-summary"),
+                        html.H2("Data: "),
+                        html.Div(id="neo-data")
                     ],
                     style={
                         "border": "2px solid black",
