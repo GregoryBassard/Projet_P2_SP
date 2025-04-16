@@ -100,4 +100,3 @@ def create_layout(neos_viewer_fig):
             "display": "flex",
             "flexDirection": "row"
         })
-    ])
