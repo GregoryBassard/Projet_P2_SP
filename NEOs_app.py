@@ -10,8 +10,10 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
-if os.getenv('USE_THREAD').lower() == 'true':
-    USE_THREAD = True
+use_thread_env = os.getenv("USE_THREAD")
+if use_thread_env is not None:
+    if use_thread_env.lower() == 'true':
+        USE_THREAD = True
 else:
     USE_THREAD = False
 
