@@ -7,8 +7,13 @@ from app_import.NEOs import NEOs, load_neos
 from app_import.Html import create_layout
 import time
 import os
+from dotenv import load_dotenv
 
-USE_THREAD = bool(os.environ.get("USE_THREAD", True))
+load_dotenv(override=True)
+if os.getenv('USE_THREAD').lower() == 'true':
+    USE_THREAD = True
+else:
+    USE_THREAD = False
 
 time_total = time.time()
 
