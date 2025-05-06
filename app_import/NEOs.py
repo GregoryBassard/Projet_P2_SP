@@ -9,7 +9,8 @@ from time import sleep
 
 class NEOs:
     def __init__(self):
-        pass
+        self.summary = None
+        self.data = None
     
     def display(self)->go.Scatter3d:
         now = datetime.now()
@@ -33,7 +34,7 @@ class NEOs:
     
     def display_orbital_path(self)->go.Scatter3d:
         now = datetime.now()
-        stop = now + timedelta(days=self.get_orbite_date_range())
+        stop = now + timedelta(days=self.get_orbite_date_range() + 1)
         
         try:
             obj = Horizons(id=self.name, location="500@10", epochs={"start": now.strftime("%Y-%m-%d"), "stop": stop.strftime("%Y-%m-%d"), "step": "1d"})
@@ -68,7 +69,7 @@ class NEOs:
         orbit_element = pd.DataFrame(data['orbit']['elements'])
         return int(orbit_element[orbit_element['title'] == 'sidereal orbital period']['value'].iloc[0])
     
-    def get_neo_data(self)->dict:
+    def request_neo_data_and_summary(self)->dict:
         try:
             url = f"https://ssd-api.jpl.nasa.gov/sentry.api?des={self.name}"
             r = requests.get(url)
@@ -81,9 +82,29 @@ class NEOs:
         except Exception as e:
             print(f"Erreur lors du chargement des données du NEO {self.name}: {e}")
         
-        self.summary = data['summary']
-        self.data = data['data']
-        return data
+        data_summary = {
+            "summary": data['summary'],
+            "data": data['data']
+        }
+        return data_summary
+
+    def get_data_and_summary(self)->dict:
+        data_summary = self.request_neo_data_and_summary()
+
+        # summary
+        summary = pd.DataFrame.from_dict(data_summary['summary'], orient='index', columns=['value'])
+
+        col_drop = ['des', 'ndop', 'nobs', 'ndel', 'nsat', 'fullname', 'pdate', 'cdate', 'darc', 'method']
+        summary = summary.drop(col_drop, axis=0, errors='ignore').sort_index()
+
+        self.summary = summary
+
+        # data
+        self.data = data_summary['data']
+
+
+        
+        
 
 class NEOsDisplayThread(Thread):
     def __init__(self, neo:NEOs, methode:str):

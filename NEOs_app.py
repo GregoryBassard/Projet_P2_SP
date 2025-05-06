@@ -9,11 +9,13 @@ import time
 import os
 from dotenv import load_dotenv
 
+USE_THREAD = False
+
 load_dotenv(override=True)
-if os.getenv('USE_THREAD').lower() == 'true':
-    USE_THREAD = True
-else:
-    USE_THREAD = False
+use_thread_env = os.getenv("USE_THREAD")
+if use_thread_env is not None:
+    if str(use_thread_env).lower() == 'true':
+        USE_THREAD = True
 
 time_total = time.time()
 
@@ -96,11 +98,12 @@ def update_orbital_visibility(click_data):
                     trace.textfont.color = "lightgray"
         for neo in neos:
             if neo.name in name:
-                neo.get_neo_data()
+                if neo.summary is None:
+                    neo.get_data_and_summary()
 
                 summary = html.Table(
-                    [html.Tr([html.Td(key), html.Td(value)]) for key, value in neo.summary.items()],
-                    style={"border": "1px solid black", "width": "100%", "textAlign": "left"}
+                    [html.Tr([html.Td(key), html.Td(value)]) for key, value in neo.summary['value'].items()],
+                    style={"border": "2px solid black", "width": "100%", "textAlign": "left"}
                 )
 
                 data = html.Table(
