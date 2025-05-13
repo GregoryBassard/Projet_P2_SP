@@ -32,7 +32,7 @@ neos_viewer_fig.update_layout(
         yaxis=dict(visible=False),
         zaxis=dict(visible=False),
         camera=dict(
-            eye=dict(x=0.5, y=0.5, z=0.5)
+            eye=dict(x=0.3, y=0.3, z=0.3)
         )
     ),
     autosize=True,
@@ -74,23 +74,29 @@ app.title = "NEOs Viewer"
 
 print(f"total loading app time : {round(time.time()-time_total, 3)}s")
 
+def highlight_neo(trace:go.Scatter3d):
+    trace.marker.color = "#fec036"
+    trace.marker.size = 6
+    trace.textfont.size = 14
+    trace.textfont.color = "#fec036"
+
+def unhighlight_neo(trace:go.Scatter3d):
+    trace.marker.color = "white"
+    trace.marker.size = 5
+    trace.textfont.size = 12
+    trace.textfont.color = "white"
+
 def show_orbit(trace:go.Scatter3d):
     if "Orbite " in trace.name:
         trace.visible = True
     else:
-        trace.marker.color = "white"
-        trace.marker.size = 8
-        trace.textfont.size = 16
-        trace.textfont.color = "white"
+        pass
 
 def hide_orbit(trace:go.Scatter3d):
     if "Orbite " in trace.name:
         trace.visible = False
     else:
-        trace.marker.color = "gray"
-        trace.marker.size = 4
-        trace.textfont.size = 12
-        trace.textfont.color = "lightgray"
+        pass
 
 @app.callback(
     Output("neos-viewer-fig", "figure"),
@@ -107,17 +113,6 @@ def update_neo(click_data, selected_neo, toggle_orbit):
 
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-    if trigger_id == "control-panel-toggle-orbit":
-        if toggle_orbit and "(neo)" in selected_neo_name:
-            for trace in neos_viewer_fig.data:
-                if selected_neo_name in trace.name:
-                    show_orbit(trace)
-        else:
-            for trace in neos_viewer_fig.data:
-                if "(neo)" in trace.name:
-                    hide_orbit(trace)
-        return neos_viewer_fig, selected_neo_name[:-6]
-
     if trigger_id == "neos-viewer-fig" and click_data:
         name = neos_viewer_fig.data[click_data["points"][0]["curveNumber"]].name
 
@@ -129,12 +124,17 @@ def update_neo(click_data, selected_neo, toggle_orbit):
     
     selected_neo_name = name
     
-    if toggle_orbit:
-        for trace in neos_viewer_fig.data:
-            if name in trace.name:
+    for trace in neos_viewer_fig.data:
+        if name in trace.name:
+            if toggle_orbit:
                 show_orbit(trace)
-            elif "(neo)" in trace.name:
+                highlight_neo(trace)
+            else:
                 hide_orbit(trace)
+                highlight_neo(trace)
+        elif "(neo)" in trace.name:
+            hide_orbit(trace)
+            unhighlight_neo(trace)
 
     return neos_viewer_fig, selected_neo_name[:-6]
 

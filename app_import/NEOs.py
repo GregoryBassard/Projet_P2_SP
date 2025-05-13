@@ -22,9 +22,9 @@ class NEOs:
             trace = go.Scatter3d(
                 x=[vectors['x'][0]*1.496e+8], y=[vectors['y'][0]*1.496e+8], z=[vectors['z'][0]*1.496e+8],
                 mode="markers+text",
-                marker=dict(size=4, color="gray", opacity=0.9),
-                text=f"{self.name} (neo)",
-                textfont=dict(size=12, color="lightgray"),
+                marker=dict(size=5, color="white", opacity=0.9),
+                text=f"{self.name}",
+                textfont=dict(size=12, color="white"),
                 name=f"{self.name} (neo)"
             )
             return trace
@@ -44,7 +44,7 @@ class NEOs:
             trace = go.Scatter3d(
                 x=vectors['x']*1.496e+8, y=vectors['y']*1.496e+8, z=vectors['z']*1.496e+8,
                 mode="lines",
-                line=dict(width=2, color="white"),
+                line=dict(width=2, color="#fec036"),
                 visible=False,
                 name=f"Orbite {self.name} (neo)"
             )
