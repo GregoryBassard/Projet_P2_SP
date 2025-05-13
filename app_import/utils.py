@@ -23,11 +23,12 @@ def load_solar_system(fig:go.Figure)->go.Figure:
     ts = load.timescale()
     time_now = ts.now()
 
-    planet_to_show = ["Mercure", "Vénus", "Terre", "Mars"]#, "Jupiter", "Saturne", "Uranus", "Neptune", "Pluton']
+    planet_to_show = ["Mercure", "Vénus", "Terre", "Mars"]#, "Jupiter", "Saturne", "Uranus", "Neptune", "Pluton"]
 
-    for i in range(len(planets_data)):
+    for i in range(len(planets_data["name"])):
         if planets_data['name'][i] not in planet_to_show:
             continue
+        print(f"Loading {planets_data['name'][i]}...")
         
         planet = kernels[planets_data['SPICE_ID'][i]]
 

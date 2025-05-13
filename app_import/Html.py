@@ -5,7 +5,7 @@ import dash_daq as daq
 
 def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
     app_title = html.P(
-        id="app_title", children=["Neos Viewer Dashboard"]
+        id="app_title", children=["Neos Viewer Sentry Dashboard"]
     )
 
     neo_dropdown = dcc.Dropdown(
@@ -21,8 +21,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
     side_panel_layout = html.Div(
         id="panel-side",
         children=[
-            app_title,
-            html.Div(id="neo-dropdown", children=neo_dropdown)
+            app_title
         ],
     )
 
@@ -31,13 +30,16 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         value=True,
         label=["Hide orbit", "Show orbit"],
         color="#ffe102",
-        style={"color": "#black"},
+        style={"color": "#black"}
     )
 
     neos_viewer = html.Div(
         id="neos-viewer",
         children=[
-            orbit_toggle,
+            html.Div(id="neos-viewer-header", children=[
+                html.Div(id="neo-dropdown", children=neo_dropdown),
+                orbit_toggle
+            ]),
             dcc.Graph(
                 id="neos-viewer-fig",
                 figure=neos_viewer_fig,

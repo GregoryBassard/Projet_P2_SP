@@ -42,6 +42,21 @@ body {
     margin: 0 0 1rem 0;
 }
 
+/* MAIN PANEL */
+
+#panel-main {
+    display: flex;
+    flex-direction: column;
+    flex: 5 83%;
+    padding: 4rem 3rem;
+}
+
+#neos-viewer-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 /* dropdown */
 
 #neo-dropdown:hover, #neo-dropdown .Select:hover {
@@ -49,7 +64,7 @@ body {
 }
 
 #neo-dropdown {
-    width: 100%;
+    width: 20%;
 }
 
 .has-value.Select--single > .Select-control .Select-value .Select-value-label,
@@ -97,15 +112,6 @@ body {
     color: #0f0f0f;
     text-align: center;
     cursor: pointer;
-}
-
-/* MAIN PANEL */
-
-#panel-main {
-    display: flex;
-    flex-direction: column;
-    flex: 5 83%;
-    padding: 4rem 3rem;
 }
 
 /* NEO VIEWER */
