@@ -19,47 +19,56 @@ if use_thread_env is not None:
 
 time_total = time.time()
 
-fig = go.Figure()
+neos_viewer_fig = go.Figure()
 
-fig.update_layout(
-    title="Orbite des Planetes autour du Soleil",
+neos_viewer_fig.update_layout(
+    title="3D NEOs Viewer",
     template="plotly_dark",
     showlegend=False,
     scene=dict(
         xaxis=dict(visible=False),
         yaxis=dict(visible=False),
-        zaxis=dict(visible=False)
-    )
+        zaxis=dict(visible=False),
+        camera=dict(
+            eye=dict(x=0.5, y=0.5, z=0.5)
+        )
+    ),
+    autosize=True,
+    paper_bgcolor="#1e1e1e",
+    plot_bgcolor="#1e1e1e",
+    margin={"t": 0, "r": 0, "b": 0, "l": 0},
+    # hovermode=False
 )
 
-fig = load_solar_system(fig)
+neos_viewer_fig = load_solar_system(neos_viewer_fig)
 
-fig.layout.uirevision = True
+neos_viewer_fig.layout.uirevision = True
 
 neo_class = NEOs()
 time_current = time.time()
 
-neos = load_neos(1e-6, -4, 0)
+neos = load_neos(1e-6, -4, 3)
 time_current = time.time()
 
 if USE_THREAD:
     for trace in display_neos_with_thread(neos):
-        fig.add_trace(trace)
+        neos_viewer_fig.add_trace(trace)
 else:
     for trace in display_neos_without_thread(neos):
-        fig.add_trace(trace)
+        neos_viewer_fig.add_trace(trace)
 
 time_current = time.time()
 
-fig = create_3d_axes(fig, 800000000, "yellow")
+neos_viewer_fig = create_3d_axes(neos_viewer_fig, 800000000, "yellow")
 
 config = {"displayModeBar": False}
 
-fig._config = config
+neos_viewer_fig._config = config
 
 app = dash.Dash(__name__)
 
-app.layout = create_layout(fig)
+app.layout = create_layout(neos_viewer_fig, neos)
+app.title = "NEOs Viewer"
 
 print(f"total loading app time : {round(time.time()-time_total, 3)}s")
 
@@ -74,12 +83,12 @@ def update_orbital_visibility(click_data):
     global selected_neo_name
 
     if click_data:
-        name = fig.data[click_data["points"][0]["curveNumber"]].name
+        name = neos_viewer_fig.data[click_data["points"][0]["curveNumber"]].name
 
         if "(neo)" not in name:
             return dash.no_update
         
-        for trace in fig.data:
+        for trace in neos_viewer_fig.data:
             if name in trace.name:
                 if "Orbite " in trace.name:
                     trace.visible = True
@@ -122,9 +131,9 @@ def update_orbital_visibility(click_data):
                 #     # data.append(row)
                 #     data.children += [row]
 
-                return fig, f"Name: {name}", summary, data
+                return neos_viewer_fig, f"Name: {name}", summary, data
 
-    return fig, "Name: N/A", html.H5("N/A"), html.H5("N/A")
+    return neos_viewer_fig, "Name: N/A", html.H5("N/A"), html.H5("N/A")
 server = app.server
 
 port = int(os.environ.get("PORT", 8050))

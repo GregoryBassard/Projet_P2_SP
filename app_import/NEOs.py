@@ -95,16 +95,12 @@ class NEOs:
         summary = pd.DataFrame.from_dict(data_summary['summary'], orient='index', columns=['value'])
 
         col_drop = ['des', 'ndop', 'nobs', 'ndel', 'nsat', 'fullname', 'pdate', 'cdate', 'darc', 'method']
-        summary = summary.drop(col_drop, axis=0, errors='ignore').sort_index()
+        summary = summary.drop(col_drop, axis=0, errors='ignore').sort_index().to_dict()
 
         self.summary = summary
 
         # data
         self.data = data_summary['data']
-
-
-        
-        
 
 class NEOsDisplayThread(Thread):
     def __init__(self, neo:NEOs, methode:str):

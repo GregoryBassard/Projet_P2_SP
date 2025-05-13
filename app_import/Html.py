@@ -1,102 +1,64 @@
 from dash import dcc, html
+import plotly.graph_objects as go
+from app_import.NEOs import NEOs
+import dash_daq as daq
 
-def create_layout(neos_viewer_fig):
-    return html.Div([
-        html.Div([
-            html.H2("Filter", style={
-                "textAlign": "center",
-                "padding": "1rem 0",
-                "borderBottom": "2px solid black"
-            }),
+def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
+    app_title = html.P(
+        id="app_title", children=["Neos Viewer Dashboard"]
+    )
 
-            html.Label("Diameter Threshold", style={"padding": "1rem 0", "display": "block", "fontWeight": "bold"}),
-            dcc.Slider(
-                id="diameter-slider",
-                min=0,
-                max=1,
-                step=0.1,
-                value=0.5,
-                marks={i / 10: f"{i / 10:.1f}" for i in range(0, 11)},
-                tooltip={"placement": "bottom", "always_visible": True}
-            ),
+    neo_dropdown = dcc.Dropdown(
+        id="neo-dropdown-component",
+        options=[
+            {"label": f"{neo.name}", "value": neo.name} for neo in neos
+        ],
+        clearable=False,
+        value="h45-k1",
+    )
 
-            html.Br(),
+    side_panel_layout = html.Div(
+        id="panel-side",
+        children=[
+            app_title,
+            html.Div(id="neo-dropdown", children=neo_dropdown)
+        ],
+    )
 
-            html.Label("Sentry Only", style={"paddingTop": "2rem", "display": "block", "fontWeight": "bold"}),
-            dcc.Checklist(
-                options=[
-                    {"label": "Yes", "value": "yes"}
-                ],
-                value=[],
-                id="sentry-toggle",
-                inputStyle={"marginRight": "0.5rem", "marginLeft": "0.5rem"}
-            ),
+    orbit_toggle = daq.ToggleSwitch(
+        id="control-panel-toggle-orbit",
+        value=True,
+        label=["Hide orbit", "Show orbit"],
+        color="#ffe102",
+        style={"color": "#black"},
+    )
 
-            html.Label("Include Observed", style={"paddingTop": "2rem", "display": "block", "fontWeight": "bold"}),
-            dcc.RadioItems(
-                options=[
-                    {"label": "All", "value": "all"},
-                    {"label": "Only Recent", "value": "recent"}
-                ],
-                value="all",
-                id="observed-toggle",
-                labelStyle={"display": "block", "marginTop": "0.5rem"}
-            )
-        ], style={
-            "border": "2px solid black",
-            "width": "20%",
-            "height": "100vh",
-            "fontSize": "1rem",
-            "padding": "1rem",
-            "overflowY": "auto",
-            "boxSizing": "border-box"
-        }),
+    neos_viewer = html.Div(
+        id="neos-viewer",
+        children=[
+            orbit_toggle,
+            dcc.Graph(
+                id="neos-viewer-fig",
+                figure=neos_viewer_fig,
+                style={"height": "100%", "width": "100%"}
+	        ),
+        ]
+    )
 
-            html.Div([
-                dcc.Graph(
-                    id="solar-system",
-                    figure=neos_viewer_fig,
-                    style={"height": "100%", "width": "100%"},
-                    config={"responsive": True}
-                )
-            ], style={
-                "border": "2px solid black",
-                "width": "50%",
-                "height": "100vh",
-                "display": "flex",
-                "flexDirection": "column",
-            }),
-            html.Div([
-                html.Div(
-                    children=[
-                        html.H1("Name: ", id="neo-name", style={"textAlign":"center"}),
-                        html.H2("Summary: "),
-                        html.Div(id="neo-summary"),
-                        html.H2("Data: "),
-                        html.Div(id="neo-data")
-                    ],
-                    style={
-                        "border": "2px solid black",
-                        "height": "35%",
-                        "overflowY": "auto",
-                        "padding": "0.5rem",
-                        "boxSizing": "border-box" 
-                    }
-                ),
-                html.Div("3D VI FOR CLICKED NEO", style={
-                    "border": "2px solid black",
-                    "height": "65%",
-                    "fontSize": "2rem",
-                    "textAlign": "center",
-                    "paddingTop": "2rem"
-                }),
-            ], style={
-                "width": "30%",
-                "height": "100vh",
-                "display": "flex",
-                "flexDirection": "column"
-            })
-        ], style={
-            "display": "flex",
-            "flexDirection": "row"
-        })
+    main_panel = html.Div(
+        id="panel-main",
+        children=[
+            dcc.Interval(id="interval", interval=1 * 2000, n_intervals=0),
+            neos_viewer
+        ],
+    )
+
+    root_layout = html.Div(
+        id="root",
+        children=[
+            side_panel_layout,
+            main_panel,
+        ],
+    )
+
+    return root_layout
