@@ -14,7 +14,8 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
             {"label": f"{neo.name}", "value": neo.name} for neo in neos
         ],
         clearable=False,
-        value="h45-k1",
+        value=neos[0].name,
+        placeholder="Select a NEO",
     )
 
     side_panel_layout = html.Div(
@@ -57,7 +58,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         id="root",
         children=[
             side_panel_layout,
-            main_panel,
+            main_panel
         ],
     )
 
