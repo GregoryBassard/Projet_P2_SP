@@ -1,0 +1,139 @@
+body {
+    background-color: #1e1e1e;
+    color: #f3f6fa;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 100;
+}
+
+#root {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+}
+
+#interval {
+    display: none;
+}
+
+/* SIDE PANEL */
+
+#panel-side {
+    padding: 7rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+    background-color: #2b2b2b;
+    flex: 1 16%;
+}
+
+/* app title */
+
+#app_title {
+    color: #fec036;
+    font-family: "Open Sans", sans-serif;
+    font-size: 2rem;
+    font-weight: normal;
+    word-break: normal;
+    margin: 0 0 1rem 0;
+}
+
+/* dropdown */
+
+#neo-dropdown:hover, #neo-dropdown .Select:hover {
+    cursor: pointer;
+}
+
+#neo-dropdown {
+    width: 100%;
+}
+
+.has-value.Select--single > .Select-control .Select-value .Select-value-label,
+.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label {
+    color: white !important;
+    cursor: pointer;
+    text-align: left;
+}
+
+.Select--single > .Select-control .Select-value, .Select-placeholder {
+    border: 1px solid gray;
+    border-radius: 4px;
+    color: white;
+    background-color: #2b2b2b;
+    cursor: pointer;
+}
+
+.Select-control, .Select-multi-value-wrapper, .Select-menu-outer div {
+    background-color: #2b2b2b;
+}
+
+.Select-control, .Select, .Select-value-label, .Select-clear-zone {
+    color: white;
+}
+
+.Select-menu-outer {
+    background-color: #2b2b2b;
+    border: 1px solid gray !important;
+}
+
+.Select-menu-outer div:hover {
+    background-color: rgba(255, 255, 255, 0.01);
+    cursor: pointer;
+}
+
+.Select-arrow {
+    border-color: gray transparent transparent;
+}
+
+.Select-arrow-zone, .Select-clear-zone, .is-open > .Select-control {
+    background-color: #2b2b2b !important;
+}
+
+#neo-dropdown-component {
+    color: #0f0f0f;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* MAIN PANEL */
+
+#panel-main {
+    display: flex;
+    flex-direction: column;
+    flex: 5 83%;
+    padding: 4rem 3rem;
+}
+
+/* NEO VIEWER */
+
+#neos-viewer {
+    height: 50rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 3rem;
+}
+
+#control-panel-toggle-orbit {
+    margin: 0 !important;
+}
+
+#neos-viewer .sc-bdVaJa.fsmTNM, .sc-bdVaJa.bQWqnK {
+    background-color: #1e1e1e;
+}
+
+#neos-viewer .sc-bxivhb.iArJfC, .sc-bxivhb.cmSQpo {
+    background-color: #2b2b2b;
+}
+
+.sc-ifAKCX.dlqMgb, .sc-ifAKCX.dlqMgb:hover, .sc-ifAKCX.igrnnx, .sc-ifAKCX.igrnnx:hover {
+    background-color: #fec036;
+    border-color: #fec036;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
