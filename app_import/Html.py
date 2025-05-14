@@ -48,11 +48,123 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         ]
     )
 
+    time_left = html.Div(
+        id="control-panel-time-left",
+        children=[
+            html.P(
+                id="control-panel-time-left-text",
+                children=["Time left before next possible impact"],
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}
+            ),
+            html.Div(
+                id="control-panel-time-left-components",
+                children=[
+                    daq.LEDDisplay(
+                        id="control-panel-time-left-year-component",
+                        value="000",
+                        label="Year",
+                        size=40,
+                        color="#fec036",
+                        backgroundColor="#2b2b2b",
+                    ),
+                    daq.LEDDisplay(
+                        id="control-panel-time-left-month-component",
+                        value="00",
+                        label="Month",
+                        size=40,
+                        color="#fec036",
+                        backgroundColor="#2b2b2b",
+                    ),
+                    daq.LEDDisplay(
+                        id="control-panel-time-left-day-component",
+                        value="00",
+                        label="Day",
+                        size=40,
+                        color="#fec036",
+                        backgroundColor="#2b2b2b",
+                    ),
+                    daq.LEDDisplay(
+                        id="control-panel-time-left-hour-minute-second-component",
+                        value="00:00:00",
+                        label="HH:MM:SS",
+                        size=40,
+                        color="#fec036",
+                        backgroundColor="#2b2b2b",
+                    )
+                ]
+            )
+        ],
+    )
+
+    impact_probability_indicator = html.Div(
+        id="control-panel-ip-indicator",
+        children=[
+            html.Div(
+                children=[
+                    html.Span("negligible", style={"text-align": "center", "color": "white"}),
+                    daq.Indicator(
+                        id="control-panel-ip-indicator-negligible",
+                        value=True,
+                        color="#36fe6f",
+                        style={"color": "#black"},
+                    ),
+                ],
+                style={"display": "grid", "alignItems": "center", "margin": "10px"}
+            ),
+            html.Div(
+                children=[
+                    html.Span("low", style={"text-align": "center", "color": "white"}),
+                    daq.Indicator(
+                        id="control-panel-ip-indicator-low",
+                        value=False,
+                        color="#feea36",
+                        style={"color": "#black"},
+                    ),
+                ],
+                style={"display": "grid", "alignItems": "center", "margin": "10px"}
+            ),
+            html.Div(
+                children=[
+                    html.Span("high", style={"text-align": "center", "color": "white"}),
+                    daq.Indicator(
+                        id="control-panel-ip-indicator-high",
+                        value=False,
+                        color="#fe3636",
+                        style={"color": "#black"},
+                    )
+                ],
+                style={"display": "grid", "alignItems": "center", "margin": "10px"}
+            ),
+        ]
+    )
+
+    panel_lower = html.Div(
+        id="control-panel", #panel-lower
+        children=[
+            html.Div(
+                id="control-panel-0", #panel-lower-0
+                children=[impact_probability_indicator, time_left],
+            ),
+            html.Div(
+                id="control-panel-1", #panel-lower-1
+                children=[]
+            )
+        ]
+    )
+
+    control_panel = html.Div(
+        id="control-panel-wrapper",
+        children=[
+            panel_lower
+        ],
+    )
+
     main_panel = html.Div(
         id="panel-main",
         children=[
             dcc.Interval(id="interval", interval=1 * 2000, n_intervals=0),
-            neos_viewer
+            neos_viewer,
+            control_panel
         ],
     )
 

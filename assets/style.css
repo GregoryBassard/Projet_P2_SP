@@ -117,7 +117,7 @@ body {
 /* NEO VIEWER */
 
 #neos-viewer {
-    height: 50rem;
+    height: 60rem;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -142,4 +142,58 @@ body {
     height: 20px;
     width: 20px;
     cursor: pointer;
+}
+
+/* CONTROL PANEl WRAPPER */
+
+#control-panel-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+/* control panel */
+
+#control-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-evenly;
+    flex: 6 60%;
+    background-color: #2b2b2b;
+    font-weight: normal;
+    padding: 2rem;
+    flex-wrap: wrap;
+}
+
+#control-panel-0, #control-panel-1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+#control-panel-0 {
+    margin-bottom: 2rem;
+}
+
+/*Time*/
+
+#control-panel-time-left {
+    margin-left: -1rem;
+    width: 50%;
+}
+
+#control-panel-time-left-components {
+    grid-area: time;
+    margin-left: -1rem;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+/* IP Indicator */
+#control-panel-ip-indicator {
+    width: auto;
+    height: 100%;
+    align-content: end;
 }

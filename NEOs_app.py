@@ -46,7 +46,6 @@ neos_viewer_fig = load_solar_system(neos_viewer_fig)
 
 neos_viewer_fig.layout.uirevision = True
 
-neo_class = NEOs()
 time_current = time.time()
 
 neos = load_neos(1e-6, -4, 3)
