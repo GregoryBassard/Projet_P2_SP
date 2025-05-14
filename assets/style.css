@@ -117,7 +117,7 @@ body {
 /* NEO VIEWER */
 
 #neos-viewer {
-    height: 60rem;
+    height: 35rem;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -196,4 +196,12 @@ body {
     width: auto;
     height: 100%;
     align-content: end;
+}
+
+#control-panel-ip-indicator-negligible, #control-panel-ip-indicator-low, #control-panel-ip-indicator-high {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 3px auto;
+    transition: 0.3s ease-in-out
 }

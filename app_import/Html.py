@@ -53,7 +53,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         children=[
             html.P(
                 id="control-panel-time-left-text",
-                children=["Time left before next possible impact"],
+                children=["Time left"],
                 style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}
             ),
             html.Div(
@@ -101,36 +101,30 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         children=[
             html.Div(
                 children=[
-                    html.Span("negligible", style={"text-align": "center", "color": "white"}),
-                    daq.Indicator(
+                    html.Span("negligible", style={"text-align": "center", "color": "white", "font-size": "12px"}),
+                    html.Div(
                         id="control-panel-ip-indicator-negligible",
-                        value=True,
-                        color="#36fe6f",
-                        style={"color": "#black"},
+                        style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
                     ),
                 ],
                 style={"display": "grid", "alignItems": "center", "margin": "10px"}
             ),
             html.Div(
                 children=[
-                    html.Span("low", style={"text-align": "center", "color": "white"}),
-                    daq.Indicator(
+                    html.Span("low", style={"text-align": "center", "color": "white", "font-size": "12px"}),
+                    html.Div(
                         id="control-panel-ip-indicator-low",
-                        value=False,
-                        color="#feea36",
-                        style={"color": "#black"},
+                        style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
                     ),
                 ],
                 style={"display": "grid", "alignItems": "center", "margin": "10px"}
             ),
             html.Div(
                 children=[
-                    html.Span("high", style={"text-align": "center", "color": "white"}),
-                    daq.Indicator(
+                    html.Span("high", style={"text-align": "center", "color": "white", "font-size": "12px"}),
+                    html.Div(
                         id="control-panel-ip-indicator-high",
-                        value=False,
-                        color="#fe3636",
-                        style={"color": "#black"},
+                        style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
                     )
                 ],
                 style={"display": "grid", "alignItems": "center", "margin": "10px"}
