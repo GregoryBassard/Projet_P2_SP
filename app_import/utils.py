@@ -3,6 +3,8 @@ import plotly.graph_objects as go
 from astroquery.jplhorizons import Horizons
 import requests
 import pandas as pd
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from .NEOs import NEOsDisplayThread
 
 def load_solar_system(fig:go.Figure)->go.Figure:
@@ -125,4 +127,25 @@ def display_neos_without_thread(neos:list):
     for neo in neos:
         yield neo.display()
         yield neo.display_orbital_path()
+
+def convert_fractional_date(date_str):
+    if '.' not in date_str:
+        raise ValueError("date format expected : 'YYYY-MM-DD.DD'")
+    
+    date_part, fraction_part = date_str.split('.')
+    
+    base_date = datetime.strptime(date_part, "%Y-%m-%d")
+    
+    fraction = float("0." + fraction_part)
+    added_seconds = fraction * 24 * 60 * 60
+    
+    final_date = base_date + timedelta(seconds=added_seconds)
+    return final_date
+
+def get_time_left(date:str)->relativedelta:
+    target_date = convert_fractional_date(date)
+    current_date = datetime.now()
+    time_left = relativedelta(target_date, current_date)
+    return time_left
+
 

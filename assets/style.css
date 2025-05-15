@@ -181,6 +181,7 @@ body {
 #control-panel-time-left {
     margin-left: -1rem;
     width: 50%;
+    height: 100%;
 }
 
 #control-panel-time-left-components {
@@ -191,11 +192,24 @@ body {
     width: 100%;
 }
 
+#control-panel-time-left-components .bFDsPr {
+    border: 2px solid gray;
+    background-color: #3e3e3e;
+    border-radius: 6px;
+}
+
 /* IP Indicator */
 #control-panel-ip-indicator {
     width: auto;
     height: 100%;
-    align-content: end;
+}
+
+#control-panel-ip-indicator-wrapper {
+    background-color: #3e3e3e;
+    width: 50%;
+    border: 2px solid gray;
+    border-radius: 35px;
+    margin: 0 auto;
 }
 
 #control-panel-ip-indicator-negligible, #control-panel-ip-indicator-low, #control-panel-ip-indicator-high {
@@ -204,4 +218,25 @@ body {
     border-radius: 50%;
     margin: 3px auto;
     transition: 0.3s ease-in-out
+}
+
+/* Tooltip */
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 150px;
+  background-color: grey;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  font-size: 12px;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }

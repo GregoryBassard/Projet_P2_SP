@@ -2,11 +2,12 @@ import plotly.graph_objects as go
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
-from app_import.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
+from app_import.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread, get_time_left
 from app_import.NEOs import NEOs, load_neos
 from app_import.Html import create_layout
 import time
 import os
+import pandas as pd
 from dotenv import load_dotenv
 
 USE_THREAD = False
@@ -58,6 +59,9 @@ else:
     for trace in display_neos_without_thread(neos):
         neos_viewer_fig.add_trace(trace)
 
+for neo in neos:
+    neo.get_data_and_summary()
+
 time_current = time.time()
 
 neos_viewer_fig = create_3d_axes(neos_viewer_fig, 800000000, "yellow")
@@ -100,6 +104,9 @@ def hide_orbit(trace:go.Scatter3d):
 @app.callback(
     Output("neos-viewer-fig", "figure"),
     Output("neo-dropdown-component", "value"),
+    Output("control-panel-ip-indicator-negligible","style"),
+    Output("control-panel-ip-indicator-low","style"),
+    Output("control-panel-ip-indicator-high","style"),
     [Input("neos-viewer-fig", "clickData"), Input("neo-dropdown-component", "value"), Input("control-panel-toggle-orbit", "value")]
 )
 def update_neo(click_data, selected_neo, toggle_orbit):
@@ -108,7 +115,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
     name = selected_neo_name
 
     if not ctx.triggered:
-        return neos_viewer_fig, selected_neo_name[:-6]
+        return neos_viewer_fig, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update
 
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
@@ -119,7 +126,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
         name = selected_neo + " (neo)"
 
     if "(neo)" not in name:
-        return dash.no_update, selected_neo_name[:-6]
+        return dash.no_update, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update
     
     selected_neo_name = name
     
@@ -135,7 +142,51 @@ def update_neo(click_data, selected_neo, toggle_orbit):
             hide_orbit(trace)
             unhighlight_neo(trace)
 
-    return neos_viewer_fig, selected_neo_name[:-6]
+    off_style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
+    
+    negligible_style = off_style
+    low_style = off_style
+    high_style = off_style
+    
+    for neo in neos:
+        if neo.name == selected_neo_name[:-6]:
+            ip = float(pd.DataFrame(neo.data).sort_values(by="date", ascending=True).reset_index(drop=True)["ip"][0])
+            print(f"ip : {ip}")
+            if ip < 1.0e-3:
+                negligible_style = {"box-shadow": "0 0 5px rgb(0,255,0)", "background-color": "rgb(0,255,0)"}
+            elif ip < 1.0:
+                low_style = {"box-shadow": "0 0 5px rgb(255,170,10)", "background-color": "rgb(255,170,10)"}
+            else:
+                high_style = {"box-shadow": "0 0 5px rgb(255,0,0)", "background-color": "rgb(255,0,0)"}
+
+    
+
+    return neos_viewer_fig, selected_neo_name[:-6], negligible_style, low_style, high_style
+
+@app.callback(
+    Output("control-panel-time-left-year-component", "value"),
+    Output("control-panel-time-left-month-component", "value"),
+    Output("control-panel-time-left-day-component", "value"),
+    Output("control-panel-time-left-hour-minute-second-component", "value"),
+    Input("interval", "n_intervals")
+)
+def update_time_left(n_intervals):
+
+    if selected_neo_name == "Select a NEO    ":
+        return dash.no_update, dash.no_update, dash.no_update, dash.no_update
+
+    for neo in neos:
+        if neo.name == selected_neo_name[:-6]:
+            date = pd.DataFrame(neo.data).sort_values(by="date", ascending=True).reset_index(drop=True)["date"][0]
+            time_left = get_time_left(date)
+
+            years = str(time_left.years).zfill(2)
+            months = str(time_left.months).zfill(2)
+            days = str(time_left.days).zfill(2)
+            hms = str(time_left.hours).zfill(2) + ":" + str(time_left.minutes).zfill(2) + ":" + str(time_left.seconds).zfill(2)
+
+            return years, months, days, hms
+    return "00", "00", "00", "00:00:00"
 
 server = app.server
 

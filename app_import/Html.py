@@ -99,36 +99,61 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
     impact_probability_indicator = html.Div(
         id="control-panel-ip-indicator",
         children=[
-            html.Div(
+            html.P(
+                id="control-panel-impact-probability-text",
+                className="tooltip",
                 children=[
-                    html.Span("negligible", style={"text-align": "center", "color": "white", "font-size": "12px"}),
-                    html.Div(
-                        id="control-panel-ip-indicator-negligible",
-                        style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
-                    ),
-                ],
-                style={"display": "grid", "alignItems": "center", "margin": "10px"}
-            ),
-            html.Div(
-                children=[
-                    html.Span("low", style={"text-align": "center", "color": "white", "font-size": "12px"}),
-                    html.Div(
-                        id="control-panel-ip-indicator-low",
-                        style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
-                    ),
-                ],
-                style={"display": "grid", "alignItems": "center", "margin": "10px"}
-            ),
-            html.Div(
-                children=[
-                    html.Span("high", style={"text-align": "center", "color": "white", "font-size": "12px"}),
-                    html.Div(
-                        id="control-panel-ip-indicator-high",
-                        style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
+                    "Impact Probability",
+                    html.Span(
+                        className="tooltiptext",
+                        children=[
+                            "Impact probability classification :",
+                            html.Br(),
+                            "negligible (< 0.001%)",
+                            html.Br(),
+                            "low (0.001% - 0.1%)",
+                            html.Br(),
+                            "high (> 1%)"
+                        ]
                     )
                 ],
-                style={"display": "grid", "alignItems": "center", "margin": "10px"}
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}
             ),
+            html.Div(
+                id="control-panel-ip-indicator-wrapper",
+                children=[
+                    html.Div(
+                        children=[
+                            html.Span("negligible", style={"text-align": "center", "color": "white", "font-size": "12px"}),
+                            html.Div(
+                                id="control-panel-ip-indicator-negligible",
+                                style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
+                            ),
+                        ],
+                        style={"display": "grid", "alignItems": "center", "margin": "10px"}
+                    ),
+                    html.Div(
+                        children=[
+                            html.Span("low", style={"text-align": "center", "color": "white", "font-size": "12px"}),
+                            html.Div(
+                                id="control-panel-ip-indicator-low",
+                                style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
+                            ),
+                        ],
+                        style={"display": "grid", "alignItems": "center", "margin": "10px"}
+                    ),
+                    html.Div(
+                        children=[
+                            html.Span("high", style={"text-align": "center", "color": "white", "font-size": "12px"}),
+                            html.Div(
+                                id="control-panel-ip-indicator-high",
+                                style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
+                            )
+                        ],
+                        style={"display": "grid", "alignItems": "center", "margin": "10px"}
+                    ),
+                ]
+            )
         ]
     )
 
@@ -156,7 +181,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
     main_panel = html.Div(
         id="panel-main",
         children=[
-            dcc.Interval(id="interval", interval=1 * 2000, n_intervals=0),
+            dcc.Interval(id="interval", interval=1000, n_intervals=0),
             neos_viewer,
             control_panel
         ],
