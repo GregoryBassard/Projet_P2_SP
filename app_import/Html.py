@@ -157,12 +157,32 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         ]
     )
 
+    speed = html.Div(
+        id="control-panel-speed",
+        children=[
+            daq.Gauge(
+                id="control-panel-speed-component",
+                label={"label": "Velocity impact", "style": {"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}},
+                min=0,
+                max=150000,
+                showCurrentValue=True,
+                value=3600,
+                size=175,
+                digits=1,
+                units="km/h",
+                color="#fec036",
+                scale={"labelInterval": 5, "interval": 10000}
+            )
+        ],
+        n_clicks=0,
+    )
+
     panel_lower = html.Div(
         id="control-panel", #panel-lower
         children=[
             html.Div(
                 id="control-panel-0", #panel-lower-0
-                children=[impact_probability_indicator, time_left],
+                children=[impact_probability_indicator, time_left, speed],
             ),
             html.Div(
                 id="control-panel-1", #panel-lower-1

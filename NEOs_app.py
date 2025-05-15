@@ -107,6 +107,7 @@ def hide_orbit(trace:go.Scatter3d):
     Output("control-panel-ip-indicator-negligible","style"),
     Output("control-panel-ip-indicator-low","style"),
     Output("control-panel-ip-indicator-high","style"),
+    Output("control-panel-speed-component","value"),
     [Input("neos-viewer-fig", "clickData"), Input("neo-dropdown-component", "value"), Input("control-panel-toggle-orbit", "value")]
 )
 def update_neo(click_data, selected_neo, toggle_orbit):
@@ -115,7 +116,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
     name = selected_neo_name
 
     if not ctx.triggered:
-        return neos_viewer_fig, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update
+        return neos_viewer_fig, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
@@ -126,7 +127,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
         name = selected_neo + " (neo)"
 
     if "(neo)" not in name:
-        return dash.no_update, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update
+        return dash.no_update, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update
     
     selected_neo_name = name
     
@@ -150,6 +151,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
     
     for neo in neos:
         if neo.name == selected_neo_name[:-6]:
+            # Impact Probability
             ip = float(pd.DataFrame(neo.data).sort_values(by="date", ascending=True).reset_index(drop=True)["ip"][0])
             print(f"ip : {ip}")
             if ip < 1.0e-3:
@@ -159,9 +161,12 @@ def update_neo(click_data, selected_neo, toggle_orbit):
             else:
                 high_style = {"box-shadow": "0 0 5px rgb(255,0,0)", "background-color": "rgb(255,0,0)"}
 
+            # Speed
+            speed = float(neo.summary['value']['v_imp']) * 3600
+
     
 
-    return neos_viewer_fig, selected_neo_name[:-6], negligible_style, low_style, high_style
+    return neos_viewer_fig, selected_neo_name[:-6], negligible_style, low_style, high_style, speed
 
 @app.callback(
     Output("control-panel-time-left-year-component", "value"),
