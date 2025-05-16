@@ -49,7 +49,7 @@ neos_viewer_fig.layout.uirevision = True
 
 time_current = time.time()
 
-neos = load_neos(1e-6, -4, 3)
+neos = load_neos(1e-6, -4, 5)
 time_current = time.time()
 
 if USE_THREAD:
@@ -106,7 +106,8 @@ def hide_orbit(trace:go.Scatter3d):
     Output("neo-dropdown-component", "value"),
     Output("control-panel-ip-indicator-negligible","style"),
     Output("control-panel-ip-indicator-low","style"),
-    Output("control-panel-ip-indicator-high","style"),
+    Output("control-panel-ip-indicator-concerning","style"),
+    Output("control-panel-ip-indicator-tooltip-text","children"),
     Output("control-panel-speed-component","value"),
     [Input("neos-viewer-fig", "clickData"), Input("neo-dropdown-component", "value"), Input("control-panel-toggle-orbit", "value")]
 )
@@ -116,7 +117,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
     name = selected_neo_name
 
     if not ctx.triggered:
-        return neos_viewer_fig, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update
+        return neos_viewer_fig, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
@@ -127,7 +128,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
         name = selected_neo + " (neo)"
 
     if "(neo)" not in name:
-        return dash.no_update, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update
+        return dash.no_update, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
     
     selected_neo_name = name
     
@@ -147,26 +148,28 @@ def update_neo(click_data, selected_neo, toggle_orbit):
     
     negligible_style = off_style
     low_style = off_style
-    high_style = off_style
+    concerning_style = off_style
     
     for neo in neos:
         if neo.name == selected_neo_name[:-6]:
             # Impact Probability
             ip = float(pd.DataFrame(neo.data).sort_values(by="date", ascending=True).reset_index(drop=True)["ip"][0])
-            print(f"ip : {ip}")
-            if ip < 1.0e-3:
+            if ip * 100 < 1.0e-3:
                 negligible_style = {"box-shadow": "0 0 5px rgb(0,255,0)", "background-color": "rgb(0,255,0)"}
-            elif ip < 1.0:
+            elif ip * 100 < 1.0:
                 low_style = {"box-shadow": "0 0 5px rgb(255,170,10)", "background-color": "rgb(255,170,10)"}
             else:
-                high_style = {"box-shadow": "0 0 5px rgb(255,0,0)", "background-color": "rgb(255,0,0)"}
+                concerning_style = {"box-shadow": "0 0 5px rgb(255,0,0)", "background-color": "rgb(255,0,0)"}
+
+            # Tooltip
+            ip_tool_children = f"{(ip * 100):.7f}% or 1 in ~{int(1/ip)} chance that he will strike"
 
             # Speed
             speed = float(neo.summary['value']['v_imp']) * 3600
 
     
 
-    return neos_viewer_fig, selected_neo_name[:-6], negligible_style, low_style, high_style, speed
+    return neos_viewer_fig, selected_neo_name[:-6], negligible_style, low_style, concerning_style, ip_tool_children, speed
 
 @app.callback(
     Output("control-panel-time-left-year-component", "value"),

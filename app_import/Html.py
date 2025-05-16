@@ -14,7 +14,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
             {"label": f"{neo.name}", "value": neo.name} for neo in neos
         ],
         clearable=False,
-        value=neos[0].name,
+        value="Select a NEO",
         placeholder="Select a NEO",
     )
 
@@ -113,7 +113,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
                             html.Br(),
                             "low (0.001% - 0.1%)",
                             html.Br(),
-                            "high (> 1%)"
+                            "concerning (> 1%)"
                         ]
                     )
                 ],
@@ -121,7 +121,14 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
             ),
             html.Div(
                 id="control-panel-ip-indicator-wrapper",
+                className="tooltip",
                 children=[
+                    html.Span( 
+                        "N/A% or ~ 1 in N/A chance that he will strike",
+                        id="control-panel-ip-indicator-tooltip-text",
+                        className="tooltiptext",
+                        style={"margin-top": "8.5rem", "font-weight": "bold"}
+                    ),
                     html.Div(
                         children=[
                             html.Span("negligible", style={"text-align": "center", "color": "white", "font-size": "12px"}),
@@ -144,9 +151,9 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
                     ),
                     html.Div(
                         children=[
-                            html.Span("high", style={"text-align": "center", "color": "white", "font-size": "12px"}),
+                            html.Span("concerning", style={"text-align": "center", "color": "white", "font-size": "12px"}),
                             html.Div(
-                                id="control-panel-ip-indicator-high",
+                                id="control-panel-ip-indicator-concerning",
                                 style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
                             )
                         ],
@@ -162,13 +169,13 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         children=[
             daq.Gauge(
                 id="control-panel-speed-component",
-                label={"label": "Velocity impact", "style": {"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}},
+                label={"label": "Impact Velocity", "style": {"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}},
                 min=0,
                 max=150000,
                 showCurrentValue=True,
                 value=3600,
                 size=175,
-                digits=1,
+                digits=0,
                 units="km/h",
                 color="#fec036",
                 scale={"labelInterval": 5, "interval": 10000}

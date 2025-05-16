@@ -212,7 +212,7 @@ body {
     margin: 0 auto;
 }
 
-#control-panel-ip-indicator-negligible, #control-panel-ip-indicator-low, #control-panel-ip-indicator-high {
+#control-panel-ip-indicator-negligible, #control-panel-ip-indicator-low, #control-panel-ip-indicator-concerning {
     width: 10px;
     height: 10px;
     border-radius: 50%;
