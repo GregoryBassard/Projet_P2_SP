@@ -49,7 +49,7 @@ neos_viewer_fig.layout.uirevision = True
 
 time_current = time.time()
 
-neos = load_neos(1e-6, -4, 5)
+neos = load_neos(1e-6, -4, 0)
 time_current = time.time()
 
 if USE_THREAD:
@@ -109,6 +109,8 @@ def hide_orbit(trace:go.Scatter3d):
     Output("control-panel-ip-indicator-concerning","style"),
     Output("control-panel-ip-indicator-tooltip-text","children"),
     Output("control-panel-speed-component","value"),
+    Output("control-panel-ps-indicator-component", "value"),
+    Output("control-panel-ps-indicator-component", "color"),
     [Input("neos-viewer-fig", "clickData"), Input("neo-dropdown-component", "value"), Input("control-panel-toggle-orbit", "value")]
 )
 def update_neo(click_data, selected_neo, toggle_orbit):
@@ -117,7 +119,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
     name = selected_neo_name
 
     if not ctx.triggered:
-        return neos_viewer_fig, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
+        return neos_viewer_fig, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
@@ -128,7 +130,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
         name = selected_neo + " (neo)"
 
     if "(neo)" not in name:
-        return dash.no_update, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
+        return dash.no_update, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
     
     selected_neo_name = name
     
@@ -167,9 +169,20 @@ def update_neo(click_data, selected_neo, toggle_orbit):
             # Speed
             speed = float(neo.summary['value']['v_imp']) * 3600
 
+            # PS
+            ps = float(pd.DataFrame(neo.data).sort_values(by="date", ascending=True).reset_index(drop=True)["ps"][0])
+            if ps > 0:
+                ps_color = "red"
+            elif ps > -2:
+                ps_color = "yellow"
+            elif ps > -5:
+                ps_color = "orange"
+            else:
+                ps_color = "green"
+
     
 
-    return neos_viewer_fig, selected_neo_name[:-6], negligible_style, low_style, concerning_style, ip_tool_children, speed
+    return neos_viewer_fig, selected_neo_name[:-6], negligible_style, low_style, concerning_style, ip_tool_children, speed, ps, ps_color
 
 @app.callback(
     Output("control-panel-time-left-year-component", "value"),

@@ -5,7 +5,7 @@ import dash_daq as daq
 
 def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
     app_title = html.P(
-        id="app_title", children=["Neos Viewer Sentry Dashboard"]
+        id="app_title", children=["Neo Info"]
     )
 
     neo_dropdown = dcc.Dropdown(
@@ -18,10 +18,47 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         placeholder="Select a NEO",
     )
 
+    neo_infos = html.Div(
+        id="panel-side-neo-infos",
+        children=[
+            html.P(
+                id="panel-side-neo-infos-NEO-name",
+                children=["NEO Name : "],
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
+            ),
+            html.P(
+                id="panel-side-neo-infos-NEO-diameter",
+                children=["Diameter : "],
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
+            ),
+            html.P(
+                id="panel-side-neo-infos-NEO-mass",
+                children=["Mass : "],
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
+            ),
+            html.P(
+                id="panel-side-neo-infos-NEO-energy",
+                children=["Energy : "],
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
+            ),
+            html.P(
+                id="panel-side-neo-infos-NEO-first-observation",
+                children=["First Observation : "],
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
+            ),
+            html.P(
+                id="panel-side-neo-infos-NEO-brightness",
+                children=["Brightness : "],
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
+            ),
+        ]
+    )
+
     side_panel_layout = html.Div(
         id="panel-side",
         children=[
-            app_title
+            app_title,
+            neo_infos
         ],
     )
 
@@ -184,16 +221,33 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         n_clicks=0,
     )
 
+    ps_indicator = html.Div(
+        id="control-panel-ps-indicator",
+        children=[
+            daq.Tank(
+                id="control-panel-ps-indicator-component",
+                label={"label": "Palermo Scale (Hazardous)", "style": {"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}},
+                value=-1,
+                min=-10,
+                max=1,
+                width=80,
+                color="#fec036",
+                showCurrentValue=True,
+            )
+        ]
+    )
+
     panel_lower = html.Div(
         id="control-panel", #panel-lower
         children=[
-            html.Div(
-                id="control-panel-0", #panel-lower-0
-                children=[impact_probability_indicator, time_left, speed],
+            html.P(
+                id="control-panel-title",
+                children=["Selected Neo Next Possible Impact Dashboard"],
+                style={"color": "#fff", "fontSize": 22, "fontWeight": "bold", "textAlign": "center"}
             ),
             html.Div(
-                id="control-panel-1", #panel-lower-1
-                children=[]
+                id="control-panel-0", #panel-lower-0
+                children=[speed, time_left, ps_indicator, impact_probability_indicator],
             )
         ]
     )
