@@ -12,7 +12,7 @@ def load_solar_system(fig:go.Figure)->go.Figure:
     kernels = load("de440.bsp")
 
     planets_data = {
-        "name": ["Mercure", "Vénus", "Terre", "Mars", "Jupiter", "Saturne", "Uranus", "Neptune"],
+        "name": ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
         "SPICE_ID": [1, 2, 3, 4, 5, 6, 7, 8, 9, 301],
         "color": ["gray", "gray", "blue", "gray", "gray", "gray", "gray", "gray", "gray", "gray"],
         "time": [88, 225, 365, 687, 4333, 10759, 30687, 60190, 90560, 28]
