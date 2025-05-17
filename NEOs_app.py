@@ -49,7 +49,7 @@ neos_viewer_fig.layout.uirevision = True
 
 time_current = time.time()
 
-neos = load_neos(1e-6, -4, 0)
+neos = load_neos(1e-6, -4, 3)
 time_current = time.time()
 
 if USE_THREAD:
@@ -111,6 +111,11 @@ def hide_orbit(trace:go.Scatter3d):
     Output("control-panel-speed-component","value"),
     Output("control-panel-ps-indicator-component", "value"),
     Output("control-panel-ps-indicator-component", "color"),
+    Output("neo-infos-name-value", "children"),
+    Output("neo-infos-diameter-value", "children"),
+    Output("neo-infos-mass-value", "children"),
+    Output("neo-infos-energy-value", "children"),
+    Output("neo-infos-first-observation-value", "children"),
     [Input("neos-viewer-fig", "clickData"), Input("neo-dropdown-component", "value"), Input("control-panel-toggle-orbit", "value")]
 )
 def update_neo(click_data, selected_neo, toggle_orbit):
@@ -119,7 +124,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
     name = selected_neo_name
 
     if not ctx.triggered:
-        return neos_viewer_fig, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
+        return neos_viewer_fig, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
 
     trigger_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
@@ -130,7 +135,7 @@ def update_neo(click_data, selected_neo, toggle_orbit):
         name = selected_neo + " (neo)"
 
     if "(neo)" not in name:
-        return dash.no_update, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
+        return dash.no_update, selected_neo_name[:-6], dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update, dash.no_update
     
     selected_neo_name = name
     
@@ -172,17 +177,24 @@ def update_neo(click_data, selected_neo, toggle_orbit):
             # PS
             ps = float(pd.DataFrame(neo.data).sort_values(by="date", ascending=True).reset_index(drop=True)["ps"][0])
             if ps > 0:
-                ps_color = "red"
+                ps_color = "#fe3636"
             elif ps > -2:
-                ps_color = "yellow"
+                ps_color = "#feb836"
             elif ps > -5:
-                ps_color = "orange"
+                ps_color = "#f1fe36"
             else:
-                ps_color = "green"
+                ps_color = "#57fe36"
 
+            # Neo Infos
+            neo_infos = neo.summary['value']
+            neo_infos_name = selected_neo_name[:-6]
+            neo_infos_diameter = f"{float(neo_infos['diameter']):.3f} km"
+            neo_infos_mass = f"{float(neo_infos['mass']):.0f} kg"
+            neo_infos_energy = f"{float(neo_infos['energy']):.3f} Mt TNT"
+            neo_infos_first_observation = neo_infos['first_obs']
     
 
-    return neos_viewer_fig, selected_neo_name[:-6], negligible_style, low_style, concerning_style, ip_tool_children, speed, ps, ps_color
+    return neos_viewer_fig, selected_neo_name[:-6], negligible_style, low_style, concerning_style, ip_tool_children, speed, ps, ps_color, neo_infos_name, neo_infos_diameter, neo_infos_mass, neo_infos_energy, neo_infos_first_observation
 
 @app.callback(
     Output("control-panel-time-left-year-component", "value"),

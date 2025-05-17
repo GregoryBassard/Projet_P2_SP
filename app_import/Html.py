@@ -4,8 +4,8 @@ from app_import.NEOs import NEOs
 import dash_daq as daq
 
 def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
-    app_title = html.P(
-        id="app_title", children=["Neo Info"]
+    side_panel_title = html.P(
+        id="app_title", children=["Selected Neo Info"]
     )
 
     neo_dropdown = dcc.Dropdown(
@@ -20,44 +20,92 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
 
     neo_infos = html.Div(
         id="panel-side-neo-infos",
-        children=[
-            html.P(
-                id="panel-side-neo-infos-NEO-name",
-                children=["NEO Name : "],
-                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
-            ),
-            html.P(
-                id="panel-side-neo-infos-NEO-diameter",
-                children=["Diameter : "],
-                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
-            ),
-            html.P(
-                id="panel-side-neo-infos-NEO-mass",
-                children=["Mass : "],
-                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
-            ),
-            html.P(
-                id="panel-side-neo-infos-NEO-energy",
-                children=["Energy : "],
-                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
-            ),
-            html.P(
-                id="panel-side-neo-infos-NEO-first-observation",
-                children=["First Observation : "],
-                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
-            ),
-            html.P(
-                id="panel-side-neo-infos-NEO-brightness",
-                children=["Brightness : "],
-                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "left"}
-            ),
+        children=[ #Name, Diameter, Mass, Energy, First Observation, Brightness
+            html.Table(
+                id="neo-infos-table",
+                children=[
+                    html.Tr(
+                        children=[
+                            html.Th(
+                                id="neo-infos-name",
+                                children=[
+                                    "Name"
+                                ]
+                            ),
+                            html.Th(id="neo-infos-name-value", children=["N/A"]),
+                        ]
+                    ),
+                    html.Tr(
+                        children=[
+                            html.Td(
+                                id="neo-infos-diameter",
+                                children=[
+                                    "Diameter",
+                                ]
+                            ),
+                            html.Td(id="neo-infos-diameter-value", children=["N/A"]),
+                        ]
+                    ),
+                    html.Tr(
+                        children=[
+                            html.Td(
+                                id="neo-infos-mass",
+                                children=[
+                                    "Mass",
+                                ]
+                            ),
+                            html.Td(id="neo-infos-mass-value", children=["N/A"]),
+                        ]
+                    ),
+                    html.Tr(
+                        children=[
+                            html.Td(
+                                id="neo-infos-energy",
+                                children=[
+                                    "Energy",
+                                    html.Div(
+                                        className="tooltip",
+                                        children=[
+                                            html.Img(
+                                                src="/assets/question_mark.png",
+                                                style={"width": "12px", "height": "12px", "margin-left": "6px"}
+                                            ),
+                                            html.Span(
+                                                className="tooltiptext",
+                                                children=[
+                                                    "The kinetic Energy released at the impact.",
+                                                    html.Br(),
+                                                    "Measured in Megaton of TNT equivalent",
+                                                ]
+                                            )
+                                        ],
+                                        style={"display": "inline-flex"}
+                                    )
+                                ]
+                            ),
+                            html.Td(id="neo-infos-energy-value", children=["N/A"]),
+                        ]
+                    ),
+                    html.Tr(
+                        children=[
+                            html.Td(
+                                id="neo-infos-first-obs",
+                                children=[
+                                    "Discovery",
+                                ]
+                            ),
+                            html.Td(id="neo-infos-first-observation-value", children=["N/A"]),
+                        ]
+                    )
+                ]
+            )
         ]
     )
 
     side_panel_layout = html.Div(
         id="panel-side",
         children=[
-            app_title,
+            side_panel_title,
             neo_infos
         ],
     )
@@ -138,23 +186,31 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         children=[
             html.P(
                 id="control-panel-impact-probability-text",
-                className="tooltip",
                 children=[
                     "Impact Probability",
-                    html.Span(
-                        className="tooltiptext",
+                    html.Div(
+                        className="tooltip",
                         children=[
-                            "Impact probability classification :",
-                            html.Br(),
-                            "negligible (< 0.001%)",
-                            html.Br(),
-                            "low (0.001% - 0.1%)",
-                            html.Br(),
-                            "concerning (> 1%)"
-                        ]
+                            html.Img(
+                                src="/assets/question_mark.png",
+                                style={"width": "12px", "height": "12px", "margin-left": "6px"},
+                            ),
+                            html.Span(
+                                className="tooltiptext",
+                                children=[
+                                    "Impact probability classification :",
+                                    html.Br(),
+                                    "negligible (< 0.001%)",
+                                    html.Br(),
+                                    "low (0.001% - 0.1%)",
+                                    html.Br(),
+                                    "concerning (> 1%)"
+                                ]
+                            )
+                        ],
                     )
                 ],
-                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center", "display": "block ruby"}
             ),
             html.Div(
                 id="control-panel-ip-indicator-wrapper",
@@ -211,7 +267,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
                 max=150000,
                 showCurrentValue=True,
                 value=3600,
-                size=175,
+                size=150,
                 digits=0,
                 units="km/h",
                 color="#fec036",
@@ -232,6 +288,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
                 max=1,
                 width=80,
                 color="#fec036",
+                theme="dark",
                 showCurrentValue=True,
             )
         ]
@@ -247,7 +304,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
             ),
             html.Div(
                 id="control-panel-0", #panel-lower-0
-                children=[speed, time_left, ps_indicator, impact_probability_indicator],
+                children=[speed, time_left, impact_probability_indicator, ps_indicator],
             )
         ]
     )
