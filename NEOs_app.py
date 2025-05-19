@@ -49,7 +49,7 @@ neos_viewer_fig.layout.uirevision = True
 
 time_current = time.time()
 
-neos = load_neos(1e-6, -4, 3)
+neos = load_neos(1e-6, -4, 5)
 time_current = time.time()
 
 if USE_THREAD:

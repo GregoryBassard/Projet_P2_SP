@@ -102,11 +102,31 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         ]
     )
 
+    neos_filter = html.Div(
+        id="panel-side-neos-filter",
+        children=[
+            html.P(
+                id="neos-filter-title",
+                children=["NEOs Filters"],
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}
+            ),
+            dcc.DatePickerRange(
+                id="neos-filter-date-picker",
+                start_date="2025-01-01",
+                end_date="3025-01-01",
+                display_format="YYYY",
+                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}
+            )
+        ],
+        style={"margin-top": "20px", "width": "100%"}
+    )
+
     side_panel_layout = html.Div(
         id="panel-side",
         children=[
             side_panel_title,
-            neo_infos
+            neo_infos,
+            neos_filter
         ],
     )
 
