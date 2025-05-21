@@ -227,9 +227,6 @@ def update_time_left(n_intervals):
     prevent_initial_call=True
 )
 def update_fig_with_options(value):
-    print(f"Value: {value}")
-    print(type(value))
-
     for trace in neos_viewer_fig.data:
         if "Axis" in trace.name:
             if "3axis" in value:
