@@ -12,10 +12,10 @@ def load_solar_system(fig:go.Figure)->go.Figure:
     kernels = load("de440.bsp")
 
     planets_data = {
-        "name": ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
-        "SPICE_ID": [1, 2, 3, 4, 5, 6, 7, 8, 9, 301],
-        "color": ["gray", "gray", "blue", "gray", "gray", "gray", "gray", "gray", "gray", "gray"],
-        "time": [88, 225, 365, 687, 4333, 10759, 30687, 60190, 90560, 28]
+        "name": ["Mercury", "Venus", "Earth", "Mars"],
+        "SPICE_ID": [1, 2, 3, 4],
+        "color": ["gray", "gray", "blue", "gray"],
+        "time": [88, 225, 365, 687]
     }
 
     # Charger le Soleil
@@ -25,12 +25,7 @@ def load_solar_system(fig:go.Figure)->go.Figure:
     ts = load.timescale()
     time_now = ts.now()
 
-    planet_to_show = ["Mercury", "Venus", "Earth", "Mars"]#, "Jupiter", "Saturn", "Uranus", "Neptune"]
-
     for i in range(len(planets_data["name"])):
-        if planets_data['name'][i] not in planet_to_show:
-            continue
-        # print(f"Loading {planets_data['name'][i]}...")
         
         planet = kernels[planets_data['SPICE_ID'][i]]
 
@@ -49,7 +44,7 @@ def load_solar_system(fig:go.Figure)->go.Figure:
                 opacity=0.75
             ),
             line=dict(width=2),
-            name=f"Orbite {planets_data['name'][i]}"
+            name=f"Orbit {planets_data['name'][i]}"
         ))
         
         fig.add_trace(go.Scatter3d(

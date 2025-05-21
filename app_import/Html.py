@@ -4,10 +4,6 @@ from app_import.NEOs import NEOs
 import dash_daq as daq
 
 def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
-    side_panel_title = html.P(
-        id="app_title", children=["Selected Neo Info"]
-    )
-
     neo_dropdown = dcc.Dropdown(
         id="neo-dropdown-component",
         options=[
@@ -20,7 +16,12 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
 
     neo_infos = html.Div(
         id="panel-side-neo-infos",
-        children=[ #Name, Diameter, Mass, Energy, First Observation, Brightness
+        children=[
+            html.P(
+                id="panel-side-neo-infos-title",
+                children=["Selected NEO Information"],
+                style={"color": "#fff", "fontSize": 22, "fontWeight": "bold", "textAlign": "center"}
+            ),
             html.Table(
                 id="neo-infos-table",
                 children=[
@@ -102,33 +103,6 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         ]
     )
 
-    neos_filter = html.Div(
-        id="panel-side-neos-filter",
-        children=[
-            html.P(
-                id="neos-filter-title",
-                children=["NEOs Filters"],
-                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}
-            ),
-            dcc.DatePickerRange(
-                id="neos-filter-date-picker",
-                start_date="2025-01-01",
-                end_date="3025-01-01",
-                display_format="YYYY",
-                style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}
-            )
-        ],
-        style={"margin-top": "20px", "width": "100%"}
-    )
-
-    side_panel_layout = html.Div(
-        id="panel-side",
-        children=[
-            side_panel_title,
-            neo_infos,
-            neos_filter
-        ],
-    )
 
     orbit_toggle = daq.ToggleSwitch(
         id="control-panel-toggle-orbit",
@@ -136,6 +110,29 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         label=["Hide orbit", "Show orbit"],
         color="#ffe102",
         style={"color": "#black"}
+    )
+
+    options = html.Div(
+        html.Div(
+            id="panel-side-options",
+            children=[
+                html.P(
+                    id="panel-side-options-title",
+                    children=["Viewer Options"],
+                    style={"color": "#fff", "fontSize": 22, "fontWeight": "bold", "textAlign": "center"}
+                ),
+                dcc.Checklist(
+                    id="panel-side-options-checklist",
+                    options=[
+                        {"label": "Show 3 axis", "value": "3axis"},
+                        {"label": "Show neo name", "value": "neo_name"},
+                        {"label": "Show only Earth", "value": "only_earth"}
+                    ],
+                    value=["3axis", "neo_name"],
+                    labelStyle={"display": "block", "color": "#fff", "fontSize": 18, "textAlign": "left"}
+                )
+            ]
+        )
     )
 
     neos_viewer = html.Div(
@@ -329,6 +326,14 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         ]
     )
 
+    side_panel_layout = html.Div(
+        id="panel-side",
+        children=[
+            options,
+            neo_infos
+        ],
+    )
+
     control_panel = html.Div(
         id="control-panel-wrapper",
         children=[
@@ -349,7 +354,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         id="root",
         children=[
             side_panel_layout,
-            main_panel
+            main_panel,
         ],
     )
 

@@ -34,7 +34,7 @@ class NEOs:
     
     def display_orbital_path(self)->go.Scatter3d:
         now = datetime.now()
-        stop = now + timedelta(days=self.get_orbite_date_range() + 1)
+        stop = now + timedelta(days=self.get_orbit_date_range() + 1)
         
         try:
             obj = Horizons(id=self.name, location="500@10", epochs={"start": now.strftime("%Y-%m-%d"), "stop": stop.strftime("%Y-%m-%d"), "step": "1d"})
@@ -46,14 +46,14 @@ class NEOs:
                 mode="lines",
                 line=dict(width=2, color="#fec036"),
                 visible=False,
-                name=f"Orbite {self.name} (neo)"
+                name=f"orbit {self.name} (neo)"
             )
             return trace
         except:
             print(f"Erreur lors du chargement du NEO {self.name}")
         return None
     
-    def get_orbite_date_range(self)->str:
+    def get_orbit_date_range(self)->str:
         try:
             url = f"https://ssd-api.jpl.nasa.gov/sbdb.api?des={self.name}"
             r = requests.get(url)

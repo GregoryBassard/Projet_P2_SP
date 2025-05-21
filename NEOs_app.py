@@ -90,13 +90,13 @@ def unhighlight_neo(trace:go.Scatter3d):
     trace.textfont.color = "white"
 
 def show_orbit(trace:go.Scatter3d):
-    if "Orbite " in trace.name:
+    if "orbit " in trace.name:
         trace.visible = True
     else:
         pass
 
 def hide_orbit(trace:go.Scatter3d):
-    if "Orbite " in trace.name:
+    if "orbit " in trace.name:
         trace.visible = False
     else:
         pass
@@ -221,7 +221,37 @@ def update_time_left(n_intervals):
             return years, months, days, hms
     return "00", "00", "00", "00:00:00"
 
+@app.callback(
+    Output("neos-viewer-fig", "figure", allow_duplicate=True),
+    Input("panel-side-options-checklist", "value"),
+    prevent_initial_call=True
+)
+def update_fig_with_options(value):
+    print(f"Value: {value}")
+    print(type(value))
+
+    for trace in neos_viewer_fig.data:
+        if "Axis" in trace.name:
+            if "3axis" in value:
+                trace.visible = True
+            else:
+                trace.visible = False
+        if "neo" in trace.name:
+            if "neo_name" not in value:
+                trace.textfont.size = 1
+            else:
+                trace.textfont.size = 12
+        if trace.name in ["Mercury", "Venus", "Mars"] or trace.name in ["Orbit Mercury", "Orbit Venus", "Orbit Mars"]:
+            if "only_earth" in value:
+                trace.visible = False
+            else:
+                trace.visible = True
+
+
+    return neos_viewer_fig
+
+
 server = app.server
 
 port = int(os.environ.get("PORT", 8050))
-app.run(debug=False, host="0.0.0.0", port=port, use_reloader=False)
+app.run(debug=True, host="0.0.0.0", port=port, use_reloader=False)
