@@ -185,15 +185,6 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         style={"margin-top": "20px", "width": "100%", "padding-left": "5px", "padding-right": "5px"}
     )
 
-    side_panel_layout = html.Div(
-        id="panel-side",
-        children=[
-            side_panel_title,
-            neo_infos,
-            neos_filter
-        ],
-    )
-
     orbit_toggle = daq.ToggleSwitch(
         id="control-panel-toggle-orbit",
         value=True,
@@ -420,7 +411,8 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         id="panel-side",
         children=[
             options,
-            neo_infos
+            neo_infos,
+            neos_filter
         ],
     )
 

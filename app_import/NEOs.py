@@ -4,6 +4,7 @@ from astroquery.jplhorizons import Horizons
 import requests
 import pandas as pd
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 from threading  import Thread
 from time import sleep
 
@@ -101,6 +102,33 @@ class NEOs:
 
         # data
         self.data = data_summary['data']
+
+    def convert_fractional_date(self, date_str):
+        if '.' not in date_str:
+            raise ValueError("date format expected : 'YYYY-MM-DD.DD'")
+        
+        date_part, fraction_part = date_str.split('.')
+        
+        base_date = datetime.strptime(date_part, "%Y-%m-%d")
+        
+        fraction = float("0." + fraction_part)
+        added_seconds = fraction * 24 * 60 * 60
+        
+        final_date = base_date + timedelta(seconds=added_seconds)
+        return final_date
+    
+    def get_time_left(self)->relativedelta:
+        date = pd.DataFrame(self.data).sort_values(by="date", ascending=True).reset_index(drop=True)["date"][0]
+        target_date = self.convert_fractional_date(date)
+        current_date = datetime.now()
+        time_left = relativedelta(target_date, current_date)
+
+        self.years = str(time_left.years).zfill(2)
+        self.months = str(time_left.months).zfill(2)
+        self.days = str(time_left.days).zfill(2)
+        self.hms = str(time_left.hours).zfill(2) + ":" + str(time_left.minutes).zfill(2) + ":" + str(time_left.seconds).zfill(2)
+
+        return time_left
 
 class NEOsDisplayThread(Thread):
     def __init__(self, neo:NEOs, methode:str):

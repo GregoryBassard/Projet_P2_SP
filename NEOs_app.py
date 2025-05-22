@@ -2,7 +2,7 @@ import plotly.graph_objects as go
 import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
-from app_import.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread, get_time_left
+from app_import.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
 from app_import.NEOs import NEOs, load_neos
 from app_import.Html import create_layout
 import time
@@ -210,15 +210,8 @@ def update_time_left(n_intervals):
 
     for neo in neos:
         if neo.name == selected_neo_name[:-6]:
-            date = pd.DataFrame(neo.data).sort_values(by="date", ascending=True).reset_index(drop=True)["date"][0]
-            time_left = get_time_left(date)
-
-            years = str(time_left.years).zfill(2)
-            months = str(time_left.months).zfill(2)
-            days = str(time_left.days).zfill(2)
-            hms = str(time_left.hours).zfill(2) + ":" + str(time_left.minutes).zfill(2) + ":" + str(time_left.seconds).zfill(2)
-
-            return years, months, days, hms
+            neo.get_time_left()
+            return neo.years, neo.months, neo.days, neo.hms
     return "00", "00", "00", "00:00:00"
 
 @app.callback(
@@ -244,6 +237,38 @@ def update_fig_with_options(value):
             else:
                 trace.visible = True
 
+
+    return neos_viewer_fig
+
+@app.callback(
+    Output("neos-viewer-fig", "figure", allow_duplicate=True),
+    Input("neos-filter-start-date-picker", "date"),
+    Input("neos-filter-end-date-picker", "date"),
+    Input("neos-filter-impact-probability", "value"),
+    Input("neos-filter-diameter-slider", "value"),
+    Input("neos-filter-energy-slider", "value"),
+    prevent_initial_call=True
+)
+def update_fig_from_filter(start_date, end_date, ip, diameter, energy):
+    print(start_date)
+    print(end_date)
+    print(ip)
+    print(diameter)
+    print(energy)
+
+    neos_filtered = []
+
+    //TODO: dropdown
+
+    for neo in neos:
+        if True:
+            neos_filtered.append(neo)
+
+
+    for trace in neos_viewer_fig.data:
+        if "neo" in trace.name:
+            if trace.name in neos_filtered:
+                pass
 
     return neos_viewer_fig
 
