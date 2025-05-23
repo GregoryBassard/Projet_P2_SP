@@ -156,10 +156,10 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
                     dcc.RangeSlider(
                         id="neos-filter-diameter-slider",
                         min=0,
-                        max=500, # You can adjust this max value based on your data
+                        max=500, 
                         step=50,
                         value=[0, 5006],
-                        marks={}, # Removed all marks for diameter
+                        marks={}, 
                         tooltip={"placement": "bottom", "always_visible": True}
                     )
                 ],
@@ -172,9 +172,9 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
                     dcc.RangeSlider(
                         id="neos-filter-energy-slider",
                         min=0,
-                        max=1000, # Example max value, adjust based on your data's actual max energy
-                        step=100, # Adjust step as needed
-                        value=[0, 1000], # Default to full range
+                        max=1000, 
+                        step=100, 
+                        value=[0, 1000], 
                         marks={},
                         tooltip={"placement": "bottom", "always_visible": True}
                     )

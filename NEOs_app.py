@@ -258,7 +258,7 @@ def update_fig_from_filter(start_date, end_date, ip, diameter, energy):
 
     neos_filtered = []
 
-    //TODO: dropdown
+    #TODO: dropdown
 
     for neo in neos:
         if True:
@@ -274,6 +274,5 @@ def update_fig_from_filter(start_date, end_date, ip, diameter, energy):
 
 
 server = app.server
-
 port = int(os.environ.get("PORT", 8050))
-app.run(debug=True, host="0.0.0.0", port=port, use_reloader=False)
+app.run(debug=False, host="0.0.0.0", port=port, use_reloader=False)
