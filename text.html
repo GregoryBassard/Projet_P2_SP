@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Near-Earth Objects and Impact Scales</title>
+
+    
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        options: {
+          skipHtmlTags: ['noscript', 'style', 'textarea', 'pre', 'code'],
+          ignoreHtmlClass: 'tex2jax_ignore',
+          processHtmlClass: 'tex2jax_process'
+        }
+      };
+    </script>
+    <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <h1>Understanding Near-Earth Objects and Impact Scales</h1>
+
+    <h2>What are Near-Earth Objects (NEOs)?</h2>
+    <p>
+        <strong>Near-Earth Objects (NEOs)</strong> are asteroids and comets whose orbits bring them within approximately 50 million kilometers of Earth's orbit. These celestial bodies are remnants from the formation of our solar system. While many NEOs exist, only a very small fraction pose any potential impact risk to Earth.
+    </p>
+    <p>
+        These objects are continuously observed and cataloged by astronomers worldwide to understand their trajectories and potential interactions with Earth.
+    </p>
+
+    <h2>How Sentry Objects are Monitored and Why Risks are Negligible</h2>
+    <p>
+        The vast majority of potentially hazardous NEOs are meticulously tracked and monitored by systems like NASA's <strong>Sentry system</strong>. Sentry is an automated collision monitoring system that continuously scans the catalog of NEOs for any future close approaches to Earth. When an object is identified as a "Sentry object," it means its orbit is being very carefully calculated and refined with every new observation.
+    </p>
+    <p>
+        Through this continuous monitoring and re-calculation, the orbits of these objects become increasingly precise. In almost all cases, as more data is collected, the initial, sometimes seemingly concerning, impact probabilities are reduced to negligible levels. The risk of any known Sentry object impacting Earth in the foreseeable future is extremely low, often effectively zero, due to the precision of modern astronomical observations and orbital mechanics. This meticulous tracking ensures that any real threats would be identified well in advance.
+    </p>
+
+    <h2>Understanding the Palermo Technical Impact Hazard Scale</h2>
+    <p>
+        The Palermo Technical Impact Hazard Scale, often simply called the <strong>Palermo Scale</strong>, is a way for astronomers to assess the potential threat posed by Near-Earth Objects (NEOs) like asteroids and comets that might collide with Earth.
+    </p>
+    <p>
+        Think of it like a sophisticated risk assessment for cosmic impacts. It's not just about how big an object is or how close it gets; it combines several factors to give us a more complete picture of the danger.
+    </p>
+
+    <h3>Here's a breakdown of what the Palermo Scale tells us:</h3>
+
+    <ul>
+        <li>
+            <strong>It's a Logarithmic Scale:</strong> This means that each increase of "1" on the scale represents a tenfold increase in risk. So, an object with a Palermo Scale value of +2 is 100 times more threatening than an object with a value of 0.
+        </li>
+        <li>
+            <strong>What the Numbers Mean:</strong>
+            <ul>
+                <li><strong>Values less than -2:</strong> These mean the object poses basically no significant threat.</li>
+                <li><strong>Values between -2 and 0:</strong> These indicate a situation being monitored but not immediately alarming.</li>
+                <li><strong>A value of 0:</strong> The risk equals the background hazard.</li>
+                <li><strong>Values greater than 0:</strong> These indicate increasingly significant risk.</li>
+            </ul>
+        </li>
+        <li>
+            <strong>What it Considers:</strong>
+            <ul>
+                <li><strong>The probability of impact:</strong> How likely is it to hit Earth?</li>
+                <li><strong>The object's size and speed:</strong> Bigger and faster objects carry more energy.</li>
+                <li><strong>The time until potential impact:</strong> The sooner the impact, the less time to react.</li>
+                <li><strong>The background hazard:</strong> The average long-term impact risk for objects of similar size.</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3>The Palermo Scale Formula:</h3>
+    <p>The Palermo Scale value ($P$) is calculated using the following formula:</p>
+
+    $$P = \log_{10}\left(\frac{p_i}{f_B \cdot T}\right)$$
+
+    <p>Where:</p>
+    <ul>
+        <li>$p_i$: The impact probability of the specific object.</li>
+        <li>$f_B$: The background impact frequency of objects of at least the same size.</li>
+        <li>$T$: The time interval over which the risk is assessed.</li>
+    </ul>
+
+    <h2>Why the Palermo Scale is Better than the Torino Scale</h2>
+    <p>
+        Before the Palermo Scale, the primary tool for assessing impact risk was the <strong>Torino Scale</strong>. While simpler and color-coded, it lacked the scientific detail of the Palermo Scale:
+    </p>
+    <ul>
+        <li><strong>Quantitative vs. Qualitative:</strong> Palermo is numerical; Torino is categorical.</li>
+        <li><strong>Contextual Risk:</strong> Palermo incorporates the background hazard; Torino does not.</li>
+        <li><strong>Time Horizon:</strong> Palermo includes time until impact explicitly.</li>
+        <li><strong>Scientific Rigor:</strong> Palermo is built for expert analysis; Torino is public-facing.</li>
+    </ul>
+    <p>
+        In essence, while the Torino Scale served a purpose for public communication, the Palermo Scale offers a more detailed, scientific, and actionable assessment of asteroid and comet impact risks, making it the preferred tool for astronomers and planetary defense specialists today.
+    </p>
+    <p>
+        <strong>In simple terms:</strong> The Palermo Scale helps scientists prioritize which potentially hazardous asteroids and comets to focus on. It allows them to quantify the risk consistently and prepare accordingly.
+    </p>
+</body>
+</html>

@@ -41,10 +41,9 @@ def create_palermo_scale_distribution_chart(neos: list) -> dcc.Graph:
             )
         )
 
-    bins = [-np.inf, -5, -2, 0, np.inf]
+    bins = [-np.inf, -2, 0, np.inf] # Modified bins
     bin_labels = [
-        "PS < -5 (Very Low Risk)",
-        "-5 <= PS < -2 (Low Risk)",
+        "PS < -2 (Very Low to Low Risk)", # Modified label
         "-2 <= PS < 0 (Elevated Risk)",
         "PS >= 0 (Potentially Significant)"
     ]
@@ -52,7 +51,7 @@ def create_palermo_scale_distribution_chart(neos: list) -> dcc.Graph:
     categorized_data = pd.cut(palermo_scale_values, bins=bins, labels=bin_labels, right=False)
     ps_counts = pd.Series(categorized_data).value_counts().reindex(bin_labels, fill_value=0)
 
-    colors = ['#57fe36', '#f1fe36', '#feb836', '#fe3636']
+    colors = ['#57fe36', '#feb836', '#fe3636'] # Modified colors to match the number of bins
 
     fig = go.Figure(
         data=[
@@ -150,7 +149,7 @@ if __name__ == '__main__':
                     'padding': '20px',
                     'border': '1px solid #333333',
                     'borderRadius': '10px',
-                    'boxShadow': '0 4px 8px rgba(0, 0, 0, 0.2)',
+                    'boxShadow': '0 4px 8px rgba[0, 0, 0, 0.2]',
                     'backgroundColor': '#1e1e1e'
                 },
                 children=[
@@ -268,4 +267,3 @@ if __name__ == '__main__':
 
     port = int(os.environ.get("PORT", 8050))
     app.run(debug=False, host="0.0.0.0", port=port, use_reloader=False)
-
