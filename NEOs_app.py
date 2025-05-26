@@ -61,6 +61,7 @@ else:
 
 for neo in neos:
     neo.get_data_and_summary()
+    neo.get_time_left()
 
 time_current = time.time()
 
@@ -242,6 +243,8 @@ def update_fig_with_options(value):
 
 @app.callback(
     Output("neos-viewer-fig", "figure", allow_duplicate=True),
+    Output("neo-dropdown-component", "options", allow_duplicate=True),
+    Output("neo-dropdown-component", "value", allow_duplicate=True),
     Input("neos-filter-start-date-picker", "date"),
     Input("neos-filter-end-date-picker", "date"),
     Input("neos-filter-impact-probability", "value"),
@@ -249,28 +252,39 @@ def update_fig_with_options(value):
     Input("neos-filter-energy-slider", "value"),
     prevent_initial_call=True
 )
-def update_fig_from_filter(start_date, end_date, ip, diameter, energy):
-    print(start_date)
-    print(end_date)
-    print(ip)
-    print(diameter)
-    print(energy)
-
+def update_fig_from_filter(filter_start_date, filter_end_date, filter_ip, filter_diameter, filter_energy):
+    global selected_neo_name
     neos_filtered = []
 
-    #TODO: dropdown
-
     for neo in neos:
-        if True:
-            neos_filtered.append(neo)
-
+        if neo.isFilter(filter_start_date, filter_end_date, filter_ip, filter_diameter, filter_energy):
+            neos_filtered.append(neo.name)
 
     for trace in neos_viewer_fig.data:
-        if "neo" in trace.name:
-            if trace.name in neos_filtered:
-                pass
+        if "neo" in trace.name and "orbit " not in trace.name:
+            if trace.name[:-6] in selected_neo_name:
+                if trace.name[:-6] in neos_filtered:
+                    highlight_neo(trace)
+                else:
+                    unhighlight_neo(trace)
+            if trace.name[:-6] in neos_filtered:
+                trace.visible = True
+            else:
+                trace.visible = False
+        elif "orbit " in trace.name:
+            if trace.name[6:-6] in selected_neo_name:
+                if trace.name[6:-6] in neos_filtered:
+                    show_orbit(trace)
+                else:
+                    hide_orbit(trace)
 
-    return neos_viewer_fig
+    if selected_neo_name[:-6] not in neos_filtered:
+        selected_neo_name = "Select a NEO    "
+
+    options=[
+        {"label": f"{neo_name}", "value": neo_name} for neo_name in neos_filtered
+    ]
+    return neos_viewer_fig, options, selected_neo_name
 
 
 server = app.server

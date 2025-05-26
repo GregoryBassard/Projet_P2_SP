@@ -129,6 +129,36 @@ class NEOs:
         self.hms = str(time_left.hours).zfill(2) + ":" + str(time_left.minutes).zfill(2) + ":" + str(time_left.seconds).zfill(2)
 
         return time_left
+    
+    def isFilter(self, filter_start_date, filter_end_date, filter_ip, filter_diameter, filter_energy)->bool:
+        result = True
+
+        neo_date = self.convert_fractional_date(pd.DataFrame(self.data).sort_values(by="date", ascending=True).reset_index(drop=True)["date"][0])
+        
+        neo_ip_value = float(pd.DataFrame(self.data).sort_values(by="date", ascending=True).reset_index(drop=True)["ip"][0])
+        
+        neo_ip_label = ""
+        if neo_ip_value * 100 < 1.0e-3:
+            neo_ip_label = "negligible"
+        elif neo_ip_value * 100 < 1.0:
+            neo_ip_label = "low"
+        else:
+            neo_ip_label = "concerning"
+
+        neo_diameter = float(self.summary['value']['diameter'])
+                             
+        neo_energy = float(self.summary['value']['energy'])
+
+        if neo_date < datetime.strptime(filter_start_date, "%Y-%m-%d") or neo_date > datetime.strptime(filter_end_date, "%Y-%m-%d"):
+            result = False
+        if neo_ip_label not in filter_ip:
+            result = False
+        if neo_diameter < float(filter_diameter[0]) or neo_diameter > float(filter_diameter[1]):
+            result = False
+        if neo_energy < float(filter_energy[0]) or neo_energy > float(filter_energy[1]):
+            result = False
+
+        return result
 
 class NEOsDisplayThread(Thread):
     def __init__(self, neo:NEOs, methode:str):
