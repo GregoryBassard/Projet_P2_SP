@@ -9,6 +9,7 @@ import time
 import os
 import pandas as pd
 from dotenv import load_dotenv
+from app_import.viz2 import create_palermo_scale_distribution_chart # Import the function
 
 USE_THREAD = False
 
@@ -49,7 +50,7 @@ neos_viewer_fig.layout.uirevision = True
 
 time_current = time.time()
 
-neos = load_neos(1e-6, -4, 5)
+neos = load_neos(1e-6, -4, 0)
 time_current = time.time()
 
 if USE_THREAD:
@@ -73,7 +74,8 @@ neos_viewer_fig._config = config
 
 app = dash.Dash(__name__)
 
-risk_distribution_fig = go.Figure() #TODO: import viz2 to app
+# TODO: import viz2 to app
+risk_distribution_fig = create_palermo_scale_distribution_chart(neos).figure # Call the function to get the figure
 
 app.layout = create_layout(neos_viewer_fig, risk_distribution_fig, neos)
 app.title = "NEOs Viewer"
@@ -291,4 +293,4 @@ def update_fig_from_filter(filter_start_date, filter_end_date, filter_ip, filter
 
 server = app.server
 port = int(os.environ.get("PORT", 8050))
-app.run(debug=True, host="0.0.0.0", port=port, use_reloader=False)
+app.run(debug=False, host="0.0.0.0", port=port, use_reloader=False)
