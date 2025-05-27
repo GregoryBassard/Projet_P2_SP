@@ -47,10 +47,15 @@ body {
     display: block ruby;
 }
 
-/* Strong */
+/* Bold */
 strong {
     font-weight: bold;
     color: #fec036;
+}
+
+b {
+    font-weight: bold;
+    color: #ffffff;
 }
 
 /* Text */

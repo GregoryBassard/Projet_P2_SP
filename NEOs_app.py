@@ -73,7 +73,9 @@ neos_viewer_fig._config = config
 
 app = dash.Dash(__name__)
 
-app.layout = create_layout(neos_viewer_fig, neos)
+risk_distribution_fig = go.Figure() #TODO: import viz2 to app
+
+app.layout = create_layout(neos_viewer_fig, risk_distribution_fig, neos)
 app.title = "NEOs Viewer"
 
 print(f"total loading app time : {round(time.time()-time_total, 3)}s")
@@ -289,4 +291,4 @@ def update_fig_from_filter(filter_start_date, filter_end_date, filter_ip, filter
 
 server = app.server
 port = int(os.environ.get("PORT", 8050))
-app.run(debug=False, host="0.0.0.0", port=port, use_reloader=False)
+app.run(debug=True, host="0.0.0.0", port=port, use_reloader=False)

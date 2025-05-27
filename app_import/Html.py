@@ -3,7 +3,7 @@ import plotly.graph_objects as go
 from app_import.NEOs import NEOs
 import dash_daq as daq
 
-def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
+def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, neos:list) -> html.Div:
     neo_dropdown = dcc.Dropdown(
         id="neo-dropdown-component",
         options=[
@@ -555,6 +555,148 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         ]
     )
 
+    risk_distribution_layout = dcc.Graph(
+        id="risk-distribution-fig",
+        figure=risk_distribution_fig,
+        style={"height": "100%", "width": "100%"}
+	)
+
+    palermo_scale_text_layout = html.Div(
+        id="palermo-scale-text",
+        children=[
+            html.H2("Understanding the Palermo Technical Impact Hazard Scale", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.P(
+                        [
+                            "The Palermo Technical Impact Hazard Scale, often simply called the",
+                            html.Strong("Palermo Scale"),
+                            ", is a way for astronomers to assess the potential threat posed by Near-Earth Objects (NEOs) like asteroids and comets that might collide with Earth.",
+                            html.Br(),
+                            "Think of it like a sophisticated risk assessment for cosmic impacts. It's not just about how big an object is or how close it gets, it combines several factors to give us a more complete picture of the danger.",
+                        ]
+                    )
+                ]
+            ),
+            html.H3("Here's a breakdown of what the Palermo Scale tells us :", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.Ul([
+                        html.Li([
+                            html.Strong("It's a Logarithmic Scale: "),
+                            "This means that each increase of \"1\" on the scale represents a tenfold increase in risk. ",
+                            "So, an object with a Palermo Scale value of +2 is 100 times more threatening than an object with a value of 0."
+                        ]),
+                        html.Li([
+                            html.Strong("What the Numbers Mean :"),
+                            html.Ul([
+                                html.Li([
+                                    html.B("Values less than -2 : "),
+                                    "These mean the object poses basically no significant threat."
+                                ]),
+                                html.Li([
+                                    html.B("Values between -2 and 0 : "),
+                                    "These indicate a situation being monitored but not immediately alarming."
+                                ]),
+                                html.Li([
+                                    html.B("A value of 0 : "),
+                                    "The risk equals the background hazard."
+                                ]),
+                                html.Li([
+                                    html.B("Values greater than 0 : "),
+                                    "These indicate increasingly significant risk."
+                                ]),
+                            ])
+                        ]),
+                        html.Li([
+                            html.Strong("What it Considers :"),
+                            html.Ul([
+                                html.Li([
+                                    html.B("The probability of impact : "),
+                                    "How likely is it to hit Earth?"
+                                ]),
+                                html.Li([
+                                    html.B("The object's size and speed : "),
+                                    "Bigger and faster objects carry more energy."
+                                ]),
+                                html.Li([
+                                    html.B("The time until potential impact : "),
+                                    "The sooner the impact, the less time to react."
+                                ]),
+                                html.Li([
+                                    html.B("The background hazard : "),
+                                    "The average long-term impact risk for objects of similar size."
+                                ]),
+                            ])
+                        ])
+                    ])
+                ]
+            ),
+            html.H3("The Palermo Scale Formula :", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.P(
+                        [
+                            "The Palermo Scale value",
+                            html.I("P"),
+                            " is calculated using the following formula :",
+                            html.Div(
+                                style={"textAlign": "center", "margin": "20px 0"},
+                                children=[
+                                    html.Img(
+                                        src="https://latex.codecogs.com/png.image?%7B%5Ccolor%7BWhite%7D%20P%20=%20%5Clog_%7B10%7D%5Cleft(%5Cfrac%7Bp_i%7D%7Bf_B%20%5Ccdot%20T%7D%5Cright)%7D",
+                                        style={"height": "48px"}
+                                    )
+                                ]
+                            ),
+                            html.Br(),
+                            "Where:",
+                            html.Ul([
+                                html.Li(
+                                    children=[
+                                        "p",
+                                        html.Sub("i"),
+                                        " = The impact probability of the specific object."
+                                    ]
+                                ),
+                                html.Li(
+                                    children=[
+                                        "f",
+                                        html.Sub("B"),
+                                        " = The background hazard, which is the average long-term impact risk for objects of similar size."
+                                    ]
+                                ),
+                                html.Li("T = The time interval over which the risk is assessed."),
+                            ])
+                        ]
+                    )
+                ]
+            )
+        ]
+    )
+
+    conclusion_layout = html.Div(
+        id="conclusion_layout",
+        children=[
+            html.H2("Conclusion", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.P(
+                        [
+                            "NEOs are a constant presence in our solar system, yet they pose virtually no threat to Earth. Thanks to advanced systems like NASA's Sentry system, these celestial bodies are continuously and meticulously tracked. This ongoing observation allows scientists to refine their orbital calculations with incredible precision. What might initially appear as a potential concern almost always diminishes to a negligible, or even zero, risk as more data is gathered. This rigorous and precise monitoring ensures that any genuine threat would be identified far in advance, giving us ample time to react.",
+                            html.Br(),
+                            "The vast majority of NEOs are nothing more than harmless cosmic neighbors, simply orbiting the Sun. As demonstrated by various visualizations and the use of a precise threat scale, we can confidently affirm that there are currently no known threats to Earth from any NEOs. The Palermo Scale, with its detailed and scientific approach, provides a clear framework for understanding and communicating the risks associated with these objects. It allows astronomers to prioritize their efforts effectively, ensuring vigilance while recognizing the low likelihood of significant impacts in the foreseeable future.",
+                        ]
+                    )
+                ]
+            )
+        ],
+    )
+
     root_layout = html.Div(
         id="root",
         children=[
@@ -564,6 +706,10 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
             neos_viewer_layout,
             html.Hr(),
             risk_distribution_text_layout,
+            risk_distribution_layout,
+            palermo_scale_text_layout,
+            html.Hr(),
+            conclusion_layout,
         ],
     )
 
