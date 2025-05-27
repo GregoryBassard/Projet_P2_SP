@@ -432,11 +432,61 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         ],
     )
 
-    root_layout = html.Div(
-        id="root",
+    neos_viewer_layout = html.Div(
+        id="neos_viewer_layout",
         children=[
             side_panel_layout,
             main_panel,
+        ],
+    )
+
+    introduction_layout = html.Div(
+        id="introduction_layout",
+        children=[
+            html.H1("NEOs Sentry", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.P(
+                        [
+                            html.Strong("NEOs (Near-Earth Objects)"),
+                            " are asteroids and comets whose orbits bring them within approximately 50 million kilometers of Earth's orbit. These celestial bodies are remnants from the formation of our solar system. While many NEOs exist, only a very small fraction pose any potential impact risk to Earth.",
+                            html.Br(),
+                            html.Br(),
+                            " These objects are continuously observed and cataloged by astronomers worldwide to understand their trajectories and potential interactions with Earth."
+                        ]
+                    )
+                ]
+            ),
+            html.H2("How Sentry Objects are Monitored", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.P(
+                        [
+                            " The vast majority of potentially hazardous NEOs are meticulously tracked and monitored by systems like NASA's ",
+                            "NEOs. Sentry is an automated collision monitoring system that continuously scans the catalog of NEOs for any future close approaches to Earth. When an object is identified as a \"Sentry object\", it means its orbit is being very carefully calculated and refined with every new observation. ",
+                        ]
+                    )
+                ]
+            ),
+            html.H2("Under Surveillance NEOs Viewer", style={"textAlign": "center", "color": "#fff"}),
+            html.P(
+                [
+                    "<explication de l'application>",
+                ]
+            )
+        ]
+    )
+
+    # "Through this continuous monitoring and re-calculation, the orbits of these objects become increasingly precise. In almost all cases, as more data is collected, the initial, sometimes seemingly concerning, impact probabilities are reduced to negligible levels. The risk of any known Sentry object impacting Earth in the foreseeable future is extremely low, often effectively zero, due to the precision of modern astronomical observations and orbital mechanics. This meticulous tracking ensures that any real threats would be identified well in advance. "
+
+
+    root_layout = html.Div(
+        id="root",
+        children=[
+            introduction_layout,
+            neos_viewer_layout,
         ],
     )
 

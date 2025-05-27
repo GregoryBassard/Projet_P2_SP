@@ -32,18 +32,35 @@ body {
   color: white;
 }
 
-/* DATE RANGE PICKER
-.DateRangePicker_picker {
-    visibility: hidden !important;
-} */
+
 
 /* ROOT */
 
 #root {
     width: 100%;
-    display: flex;
+    display: block;
     flex-direction: row;
     justify-content: stretch;
+}
+
+/* Neo Viewer */
+
+#neos_viewer_layout {
+    display: block ruby;
+}
+
+/* Strong */
+strong {
+    font-weight: bold;
+    color: #fec036;
+}
+
+/* Text */
+.text {
+    margin: 25px 250px 100px 250px;
+    text-align: justify;
+    color: #fff;
+    font-size: 20px;
 }
 
 /* Interval */
