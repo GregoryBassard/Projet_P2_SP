@@ -471,16 +471,54 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
                 ]
             ),
             html.H2("Under Surveillance NEOs Viewer", style={"textAlign": "center", "color": "#fff"}),
-            html.P(
-                [
-                    "<explication de l'application>",
+            html.H3("About the Viewer Appplication", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.P(
+                        [
+                            "This application is an interactive dashboard for visualizing and exploring NEOs that are monitored for potential impact risks with Earth.",
+                            html.Br(),
+                            "It uses data from",
+                            html.Strong(" NASA's Sentry system "),
+                            "to display the orbits, physical characteristics, and risk assessments of asteroids and comets whose paths bring them close to our planet."
+                        ]
+                    )
                 ]
-            )
+            ),
+            html.H3("How to Use it (a voir si on garde)", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.Ul([
+                        html.Li([
+                            html.Strong("3D Viewer : "),
+                            "Use the 3D viewer to see the orbits of NEOs in the solar system. Select a specific NEO from the dropdown menu or by clicking on it in the viewer."
+                        ]),
+                        html.Li([
+                            html.Strong("Filters : "),
+                            "On the left panel, filter NEOs by date, impact probability, diameter, and energy. Adjust the sliders and checkboxes to refine the dropdown and the displayed NEOs."
+                        ]),
+                        html.Li([
+                            html.Strong("NEO Information : "),
+                            "When you select a NEO, detailed information about its size, mass, energy, discovery date, and impact probability will appear in the side panel."
+                        ]),
+                        html.Li([
+                            html.Strong("Viewer Options : "),
+                            "Toggle options to show or hide axes, NEO names, or display only Earth and its orbit."
+                        ]),
+                        html.Li([
+                            html.Strong("Impact Dashboard : "),
+                            "The control panel displays real-time data such as time left until the next possible impact, impact velocity, impact probability, and the Palermo Scale hazard rating."
+                        ]),
+                    ]),
+                    html.P("Explore the dashboard to learn more about NEOs and their potential risks in an interactive and visual way!")
+                ]
+            ),
         ]
     )
 
-    # "Through this continuous monitoring and re-calculation, the orbits of these objects become increasingly precise. In almost all cases, as more data is collected, the initial, sometimes seemingly concerning, impact probabilities are reduced to negligible levels. The risk of any known Sentry object impacting Earth in the foreseeable future is extremely low, often effectively zero, due to the precision of modern astronomical observations and orbital mechanics. This meticulous tracking ensures that any real threats would be identified well in advance. "
-
+    
 
     root_layout = html.Div(
         id="root",
