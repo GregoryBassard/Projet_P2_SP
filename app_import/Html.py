@@ -380,7 +380,7 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         children=[
             daq.Tank(
                 id="control-panel-ps-indicator-component",
-                label={"label": "Palermo Scale (Hazardous)", "style": {"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}},
+                label={"label": "Hazardous (Palermo Scale)", "style": {"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}},
                 value=-1,
                 min=-10,
                 max=1,
@@ -469,9 +469,14 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
                         ]
                     )
                 ]
-            ),
+            )
+        ]
+    )
+
+    neos_viewer_text_layout = html.Div(
+        id="neos-viewer-text",
+        children=[
             html.H2("Under Surveillance NEOs Viewer", style={"textAlign": "center", "color": "#fff"}),
-            html.H3("About the Viewer Appplication", style={"textAlign": "center", "color": "#fff"}),
             html.Div(
                 className="text",
                 children=[
@@ -518,13 +523,47 @@ def create_layout(neos_viewer_fig:go.Figure, neos:list) -> html.Div:
         ]
     )
 
-    
+    risk_distribution_text_layout = html.Div(
+        id="risk-distribution-text",
+        children=[
+            html.H2("Risk Distribution of NEOs", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.P(
+                        [
+                        "This dashboard provides an interactive visualization of Near-Earth Objects (NEOs) that are monitored for potential impact risks with Earth. ",
+                        "Using real data from ",
+                        html.Strong("NASA's Sentry system"),
+                        ", the application displays the orbits, physical characteristics, and risk assessments of asteroids and comets whose paths bring them close to our planet.",
+                        ]
+                    )
+                ]
+            ),
+            html.H3("How to Use the Application", style={"textAlign": "center", "color": "#fff"}),
+            html.Div(
+                className="text",
+                children=[
+                    html.Ul(
+                    [
+                        html.Li("Select a NEO: Use the dropdown menu to choose a specific NEO and view its details, including diameter, impact velocity, Palermo Scale rating, and impact probability."),
+                        html.Li("View Risk Distribution: The chart below the details section shows the overall distribution of impact risks (Palermo Scale) for all tracked NEOs."),
+                        html.Li("Interpret the Data: Most NEOs fall into lower risk categories, but you can quickly identify objects with higher potential risk using the provided metrics and visualizations."),
+                    ], style={"color": "white", "fontSize": "1.05em", "marginBottom": "20px"}),
+                ]
+            )          
+        ]
+    )
 
     root_layout = html.Div(
         id="root",
         children=[
             introduction_layout,
+            html.Hr(),
+            neos_viewer_text_layout,
             neos_viewer_layout,
+            html.Hr(),
+            risk_distribution_text_layout,
         ],
     )
 
