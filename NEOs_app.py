@@ -9,7 +9,7 @@ import time
 import os
 import pandas as pd
 from dotenv import load_dotenv
-from app_import.viz2 import create_palermo_scale_distribution_chart # Import the function
+from app_import.viz2 import create_palermo_scale_distribution_chart
 
 USE_THREAD = False
 
@@ -74,8 +74,8 @@ neos_viewer_fig._config = config
 
 app = dash.Dash(__name__)
 
-# TODO: import viz2 to app
-risk_distribution_fig = create_palermo_scale_distribution_chart(neos).figure # Call the function to get the figure
+
+risk_distribution_fig = create_palermo_scale_distribution_chart(neos).figure 
 
 app.layout = create_layout(neos_viewer_fig, risk_distribution_fig, neos)
 app.title = "NEOs Viewer"
