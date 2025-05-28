@@ -13,7 +13,7 @@ from app_import.NEOs import NEOs, load_neos
 
 def create_palermo_scale_distribution_chart(neos: list) -> dcc.Graph:
     palermo_scale_values = []
-    
+
     for neo in neos:
         if neo.data:
             ps_for_neo = []
@@ -23,7 +23,7 @@ def create_palermo_scale_distribution_chart(neos: list) -> dcc.Graph:
                         ps_for_neo.append(float(event['ps']))
                     except ValueError:
                         continue
-            
+
             if ps_for_neo:
                 palermo_scale_values.append(max(ps_for_neo))
 
@@ -36,14 +36,14 @@ def create_palermo_scale_distribution_chart(neos: list) -> dcc.Graph:
                     'font': {'size': 18, 'color': 'white'}
                 },
                 template="plotly_dark",
-                plot_bgcolor='#111111',
-                paper_bgcolor='#111111'
+                plot_bgcolor="#1e1e1e",
+                paper_bgcolor='#1e1e1e'
             )
         )
 
-    bins = [-np.inf, -2, 0, np.inf] # Modified bins
+    bins = [-np.inf, -2, 0, np.inf]
     bin_labels = [
-        "PS < -2 (Very Low to Low Risk)", # Modified label
+        "PS < -2 (Very Low to Low Risk)",
         "-2 <= PS < 0 (Elevated Risk)",
         "PS >= 0 (Potentially Significant)"
     ]
@@ -51,7 +51,7 @@ def create_palermo_scale_distribution_chart(neos: list) -> dcc.Graph:
     categorized_data = pd.cut(palermo_scale_values, bins=bins, labels=bin_labels, right=False)
     ps_counts = pd.Series(categorized_data).value_counts().reindex(bin_labels, fill_value=0)
 
-    colors = ['#57fe36', '#feb836', '#fe3636'] # Modified colors to match the number of bins
+    colors = ['#57fe36', '#feb836', '#fe3636']
 
     fig = go.Figure(
         data=[
@@ -78,8 +78,8 @@ def create_palermo_scale_distribution_chart(neos: list) -> dcc.Graph:
         xaxis_title="Palermo Scale Category",
         yaxis_title="Number of NEOs",
         template="plotly_dark",
-        plot_bgcolor='#111111',
-        paper_bgcolor='#111111',
+        plot_bgcolor='#1e1e1e',  
+        paper_bgcolor='#1e1e1e', 
         font_color='white',
         xaxis=dict(
             tickangle=-45,
@@ -106,8 +106,8 @@ if __name__ == '__main__':
 
     print("Loading NEOs data for visualization...")
     initial_neos_limit = 100
-    neos_data = load_neos(ip_min=1e-6, ps_min=-4, limit=initial_neos_limit) 
-    
+    neos_data = load_neos(ip_min=1e-6, ps_min=-4, limit=initial_neos_limit)
+
     for i, neo in enumerate(neos_data):
         neo.get_data_and_summary()
         sleep(0.1)
@@ -121,7 +121,7 @@ if __name__ == '__main__':
 
     app.layout = html.Div(
         style={
-            'backgroundColor': '#111111',
+            'backgroundColor': '#1e1e1e',
             'color': 'white',
             'fontFamily': 'Inter, sans-serif',
             'padding': '20px',
@@ -140,7 +140,7 @@ if __name__ == '__main__':
                     'color': '#fec036'
                 }
             ),
-            
+
             html.Div(
                 style={
                     'width': '90%',
@@ -197,7 +197,7 @@ if __name__ == '__main__':
                     'border': '1px solid #333333',
                     'borderRadius': '10px',
                     'boxShadow': '0 4px 8px rgba(0, 0, 0, 0.2)',
-                    'backgroundColor': '#1e1e1e'
+                    'backgroundColor': '#1e1e1e' 
                 },
                 children=[
                     html.H2(
@@ -237,7 +237,7 @@ if __name__ == '__main__':
 
         if selected_neo and selected_neo.summary and selected_neo.data:
             diameter_km = float(selected_neo.summary['value'].get('diameter', 0)) if 'diameter' in selected_neo.summary['value'] else 0
-            
+
             velocity_km_s = float(selected_neo.summary['value'].get('v_imp', 0)) if 'v_imp' in selected_neo.summary['value'] else 0
             velocity_km_h = velocity_km_s * 3600
 
