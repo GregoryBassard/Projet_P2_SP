@@ -14,6 +14,7 @@ from app_import.viz2 import create_palermo_scale_distribution_chart
 USE_THREAD = False
 
 selected_neo_name = "Select a NEO    "
+neo_name_font = True
 
 load_dotenv(override=True)
 use_thread_env = os.getenv("USE_THREAD")
@@ -82,16 +83,22 @@ app.title = "NEOs Viewer"
 
 print(f"total loading app time : {round(time.time()-time_total, 3)}s")
 
-def highlight_neo(trace:go.Scatter3d):
+def highlight_neo(trace:go.Scatter3d, neo_name_font:bool):
     trace.marker.color = "#fec036"
     trace.marker.size = 6
-    trace.textfont.size = 14
+    if not neo_name_font:
+        trace.textfont.size = 1
+    else:
+        trace.textfont.size = 14
     trace.textfont.color = "#fec036"
 
-def unhighlight_neo(trace:go.Scatter3d):
+def unhighlight_neo(trace:go.Scatter3d, neo_name_font:bool):
     trace.marker.color = "white"
     trace.marker.size = 5
-    trace.textfont.size = 12
+    if not neo_name_font:
+        trace.textfont.size = 1
+    else:
+        trace.textfont.size = 12
     trace.textfont.color = "white"
 
 def show_orbit(trace:go.Scatter3d):
@@ -125,6 +132,8 @@ def hide_orbit(trace:go.Scatter3d):
 )
 def update_neo(click_data, selected_neo, toggle_orbit):
     global selected_neo_name
+    global neo_name_font
+
     ctx = dash.callback_context
     name = selected_neo_name
 
@@ -148,13 +157,13 @@ def update_neo(click_data, selected_neo, toggle_orbit):
         if name in trace.name:
             if toggle_orbit:
                 show_orbit(trace)
-                highlight_neo(trace)
+                highlight_neo(trace, neo_name_font)
             else:
                 hide_orbit(trace)
-                highlight_neo(trace)
+                highlight_neo(trace, neo_name_font)
         elif "(neo)" in trace.name:
             hide_orbit(trace)
-            unhighlight_neo(trace)
+            unhighlight_neo(trace, neo_name_font)
 
     off_style={"box-shadow": "0 0 5px rgb(80,80,80)", "background-color": "rgb(80,80,80)"}
     
@@ -225,6 +234,8 @@ def update_time_left(n_intervals):
     prevent_initial_call=True
 )
 def update_fig_with_options(value):
+    global neo_name_font
+
     for trace in neos_viewer_fig.data:
         if "Axis" in trace.name:
             if "3axis" in value:
@@ -233,8 +244,10 @@ def update_fig_with_options(value):
                 trace.visible = False
         if "neo" in trace.name:
             if "neo_name" not in value:
+                neo_name_font = False
                 trace.textfont.size = 1
             else:
+                neo_name_font = True
                 trace.textfont.size = 12
         if trace.name in ["Mercury", "Venus", "Mars"] or trace.name in ["Orbit Mercury", "Orbit Venus", "Orbit Mars"]:
             if "only_earth" in value:
