@@ -43,7 +43,7 @@ def create_palermo_scale_distribution_chart(neos: list) -> dcc.Graph:
 
     bins = [-np.inf, -2, 0, np.inf]
     bin_labels = [
-        "PS < -2 (Very Low to Low Risk)",
+        "PS < -2 (Very Low to No Risk)",
         "-2 <= PS < 0 (Elevated Risk)",
         "PS >= 0 (Potentially Significant)"
     ]
