@@ -111,27 +111,25 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
                 children=["NEOs Filters"],
                 style={"color": "#fff", "fontSize": 20, "fontWeight": "bold", "textAlign": "center"}
             ),
-            # Two separate DatePickers for Start and End Dates
             html.Div(
                 children=[
                     html.P("Start Date:", style={"color": "#fff", "fontSize": 16, "marginTop": "10px", "marginBottom": "5px"}),
                     dcc.DatePickerSingle(
                         id="neos-filter-start-date-picker",
-                        date="2025-01-01", # Set an initial date
-                        display_format="DD/MM/YYYY", # Changed format
+                        date="2025-01-01",
+                        display_format="DD/MM/YYYY",
                         style={"color": "#fff", "fontSize": 16, "textAlign": "center"}
                     ),
                     html.P("End Date:", style={"color": "#fff", "fontSize": 16, "marginTop": "15px", "marginBottom": "5px"}),
                     dcc.DatePickerSingle(
                         id="neos-filter-end-date-picker",
-                        date="3025-01-01", # Set an initial date
-                        display_format="DD/MM/YYYY", # Changed format
+                        date="3025-01-01",
+                        display_format="DD/MM/YYYY",
                         style={"color": "#fff", "fontSize": 16, "textAlign": "center"}
                     ),
                 ],
-                style={"margin-top": "20px", "textAlign": "center"} # Center the pickers
+                style={"margin-top": "20px", "textAlign": "center"}
             ),
-            # Impact Probability Filter
             html.Div(
                 children=[
                     html.P("Impact Probability:", style={"color": "#fff", "marginTop": "10px"}),
@@ -142,14 +140,13 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
                             {"label": " Low", "value": "low"},
                             {"label": " Concerning", "value": "concerning"},
                         ],
-                        value=["negligible", "low", "concerning"], # Default to all selected
+                        value=["negligible", "low", "concerning"],
                         inline=False,
                         style={"color": "#fff"}
                     )
                 ],
                 style={"margin-top": "20px", "margin-left": "0px", "margin-right": "0px"}
             ),
-            # Diameter Filter
             html.Div(
                 children=[
                     html.P("Diameter (km):", style={"color": "#fff", "marginTop": "10px"}),
@@ -165,7 +162,6 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
                 ],
                 style={"margin-top": "20px", "margin-left": "0px", "margin-right": "0px"}
             ),
-            # Energy Slider
             html.Div(
                 children=[
                     html.P("Energy (Megatons of TNT):", style={"color": "white", "marginTop": "10px"}),
@@ -393,7 +389,7 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
     )
 
     panel_lower = html.Div(
-        id="control-panel", #panel-lower
+        id="control-panel",
         children=[
             html.P(
                 id="control-panel-title",
@@ -401,7 +397,7 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
                 style={"color": "#fff", "fontSize": 22, "fontWeight": "bold", "textAlign": "center"}
             ),
             html.Div(
-                id="control-panel-0", #panel-lower-0
+                id="control-panel-0",
                 children=[speed, time_left, impact_probability_indicator, ps_indicator],
             )
         ]
@@ -564,7 +560,7 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
                 children=[
                     html.P(
                         [
-                            "The Palermo Technical Impact Hazard Scale, often simply called the",
+                            "The Palermo Technical Impact Hazard Scale, often simply called the ",
                             html.Strong("Palermo Scale"),
                             ", is a way for astronomers to assess the potential threat posed by Near-Earth Objects (NEOs) like asteroids and comets that might collide with Earth.",
                             html.Br(),
@@ -581,26 +577,31 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
                         html.Li([
                             html.Strong("It's a Logarithmic Scale: "),
                             "This means that each increase of \"1\" on the scale represents a tenfold increase in risk. ",
-                            "So, an object with a Palermo Scale value of +2 is 100 times more threatening than an object with a value of 0."
+                            "So, an object with a Palermo Scale value of +2 is 100 times more threatening than an object with a value of 0.",
+                            html.Br()
                         ]),
                         html.Li([
                             html.Strong("What the Numbers Mean :"),
                             html.Ul([
                                 html.Li([
                                     html.B("Values less than -2 : "),
-                                    "These mean the object poses basically no significant threat."
+                                    "These mean the object poses basically no significant threat.",
+                                    html.Br()
                                 ]),
                                 html.Li([
                                     html.B("Values between -2 and 0 : "),
-                                    "These indicate a situation being monitored but not immediately alarming."
+                                    "These indicate a situation being monitored but not immediately alarming.",
+                                    html.Br()
                                 ]),
                                 html.Li([
                                     html.B("A value of 0 : "),
-                                    "The risk equals the background hazard."
+                                    "The risk equals the background hazard.",
+                                    html.Br()
                                 ]),
                                 html.Li([
                                     html.B("Values greater than 0 : "),
-                                    "These indicate increasingly significant risk."
+                                    "These indicate increasingly significant risk.",
+                                    html.Br()
                                 ]),
                             ])
                         ]),
@@ -609,19 +610,23 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
                             html.Ul([
                                 html.Li([
                                     html.B("The probability of impact : "),
-                                    "How likely is it to hit Earth?"
+                                    "How likely is it to hit Earth?",
+                                    html.Br()
                                 ]),
                                 html.Li([
                                     html.B("The object's size and speed : "),
-                                    "Bigger and faster objects carry more energy."
+                                    "Bigger and faster objects carry more energy.",
+                                    html.Br()
                                 ]),
                                 html.Li([
                                     html.B("The time until potential impact : "),
-                                    "The sooner the impact, the less time to react."
+                                    "The sooner the impact, the less time to react.",
+                                    html.Br()
                                 ]),
                                 html.Li([
                                     html.B("The background hazard : "),
-                                    "The average long-term impact risk for objects of similar size."
+                                    "The average long-term impact risk for objects of similar size.",
+                                    html.Br()
                                 ]),
                             ])
                         ])
@@ -695,15 +700,12 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
         id="root",
         children=[
             introduction_layout,
-            html.Hr(),
             neos_viewer_text_layout,
             neos_viewer_layout,
             neos_viewer_text_explaination,
-            html.Hr(),
             risk_distribution_text_layout,
             risk_distribution_layout,
             palermo_scale_text_layout,
-            html.Hr(),
             conclusion_layout
         ]
     )

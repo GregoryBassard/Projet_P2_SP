@@ -74,6 +74,11 @@ b {
     font-weight: italic;
 }
 
+
+.explain-app-text li {
+    font-size: 16px;
+}
+
 /* Interval */
 
 #interval {

@@ -13,7 +13,7 @@ from app_import.viz2 import create_palermo_scale_distribution_chart
 
 USE_THREAD = False
 
-selected_neo_name = "Select a NEO    "
+selected_neo_name = "Select a NEO"
 neo_name_font = True
 
 load_dotenv(override=True)
