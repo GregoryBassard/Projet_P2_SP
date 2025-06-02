@@ -275,4 +275,5 @@ def update_fig_from_filter(filter_start_date, filter_end_date, filter_ip, filter
 
 
 server = app.server
-app.run(debug=False, use_reloader=False)
+port = int(os.environ.get("PORT", 8050))
+app.run(debug=False, port=port, host="0.0.0.0" use_reloader=False)
