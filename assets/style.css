@@ -76,7 +76,12 @@ b {
 
 
 .explain-app-text li {
-    font-size: 16px;
+    font-size: 20px;
+}
+
+
+.explain-app-text p {
+    font-size: 20px;
 }
 
 /* Interval */

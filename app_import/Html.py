@@ -539,7 +539,7 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
                             "The control panel displays real-time data such as time left until the next possible impact, impact velocity, impact probability, and the Palermo Scale hazard rating."
                         ]),
                     ]),
-                    html.P("Explore the dashboard to learn more about NEOs and their potential risks in an interactive and visual way!")
+                    html.P("Explore the dashboard to learn more about NEOs and their potential risks in an interactive and visual way !")
                 ]
             ),
         ]
