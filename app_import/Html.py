@@ -1,6 +1,5 @@
 from dash import dcc, html
 import plotly.graph_objects as go
-from app_import.NEOs import NEOs
 import dash_daq as daq
 
 def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, neos:list) -> html.Div:
@@ -639,15 +638,15 @@ def create_layout(neos_viewer_fig:go.Figure, risk_distribution_fig:go.Figure, ne
                 children=[
                     html.P(
                         [
-                            "The Palermo Scale value",
+                            "The Palermo Scale value ",
                             html.I("P"),
                             " is calculated using the following formula :",
                             html.Div(
                                 style={"textAlign": "center", "margin": "20px 0"},
                                 children=[
                                     html.Img(
-                                        src="https://latex.codecogs.com/png.image?%7B%5Ccolor%7BWhite%7D%20P%20=%20%5Clog_%7B10%7D%5Cleft(%5Cfrac%7Bp_i%7D%7Bf_B%20%5Ccdot%20T%7D%5Cright)%7D",
-                                        style={"height": "48px"}
+                                        src="assets\image.png",
+                                        style={"height": "200px"}
                                     )
                                 ]
                             ),

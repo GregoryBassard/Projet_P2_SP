@@ -1,9 +1,5 @@
 from skyfield.api import load
 import plotly.graph_objects as go
-from astroquery.jplhorizons import Horizons
-import requests
-import pandas as pd
-from datetime import datetime, timedelta
 from .NEOs import NEOsDisplayThread
 
 def load_solar_system(fig:go.Figure)->go.Figure:
@@ -123,3 +119,28 @@ def display_neos_without_thread(neos:list):
         yield neo.display_orbital_path()
 
 
+def highlight_neo(trace:go.Scatter3d, neo_name_font:bool):
+    trace.marker.color = "#fec036"
+    trace.marker.size = 6
+    if not neo_name_font:
+        trace.textfont.size = 1
+    else:
+        trace.textfont.size = 14
+    trace.textfont.color = "#fec036"
+
+def unhighlight_neo(trace:go.Scatter3d, neo_name_font:bool):
+    trace.marker.color = "white"
+    trace.marker.size = 5
+    if not neo_name_font:
+        trace.textfont.size = 1
+    else:
+        trace.textfont.size = 12
+    trace.textfont.color = "white"
+
+def show_orbit(trace:go.Scatter3d):
+    if "orbit " in trace.name:
+        trace.visible = True
+
+def hide_orbit(trace:go.Scatter3d):
+    if "orbit " in trace.name:
+        trace.visible = False

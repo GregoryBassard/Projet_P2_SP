@@ -1,4 +1,3 @@
-from skyfield.api import load
 import plotly.graph_objects as go
 from astroquery.jplhorizons import Horizons
 import requests

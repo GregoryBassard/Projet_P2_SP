@@ -1,9 +1,8 @@
 import plotly.graph_objects as go
 import dash
-from dash import dcc, html
 from dash.dependencies import Input, Output
-from app_import.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread
-from app_import.NEOs import NEOs, load_neos
+from app_import.utils import load_solar_system, create_3d_axes, display_neos_with_thread, display_neos_without_thread, highlight_neo, unhighlight_neo, show_orbit, hide_orbit
+from app_import.NEOs import load_neos
 from app_import.Html import create_layout
 import time
 import os
@@ -82,36 +81,6 @@ app.layout = create_layout(neos_viewer_fig, risk_distribution_fig, neos)
 app.title = "NEOs Viewer"
 
 print(f"total loading app time : {round(time.time()-time_total, 3)}s")
-
-def highlight_neo(trace:go.Scatter3d, neo_name_font:bool):
-    trace.marker.color = "#fec036"
-    trace.marker.size = 6
-    if not neo_name_font:
-        trace.textfont.size = 1
-    else:
-        trace.textfont.size = 14
-    trace.textfont.color = "#fec036"
-
-def unhighlight_neo(trace:go.Scatter3d, neo_name_font:bool):
-    trace.marker.color = "white"
-    trace.marker.size = 5
-    if not neo_name_font:
-        trace.textfont.size = 1
-    else:
-        trace.textfont.size = 12
-    trace.textfont.color = "white"
-
-def show_orbit(trace:go.Scatter3d):
-    if "orbit " in trace.name:
-        trace.visible = True
-    else:
-        pass
-
-def hide_orbit(trace:go.Scatter3d):
-    if "orbit " in trace.name:
-        trace.visible = False
-    else:
-        pass
 
 @app.callback(
     Output("neos-viewer-fig", "figure"),
@@ -271,6 +240,7 @@ def update_fig_with_options(value):
 )
 def update_fig_from_filter(filter_start_date, filter_end_date, filter_ip, filter_diameter, filter_energy):
     global selected_neo_name
+    global neo_name_font
     neos_filtered = []
 
     for neo in neos:
@@ -281,9 +251,9 @@ def update_fig_from_filter(filter_start_date, filter_end_date, filter_ip, filter
         if "neo" in trace.name and "orbit " not in trace.name:
             if trace.name[:-6] in selected_neo_name:
                 if trace.name[:-6] in neos_filtered:
-                    highlight_neo(trace)
+                    highlight_neo(trace, neo_name_font)
                 else:
-                    unhighlight_neo(trace)
+                    unhighlight_neo(trace, neo_name_font)
             if trace.name[:-6] in neos_filtered:
                 trace.visible = True
             else:
@@ -305,5 +275,4 @@ def update_fig_from_filter(filter_start_date, filter_end_date, filter_ip, filter
 
 
 server = app.server
-port = int(os.environ.get("PORT", 8050))
-app.run(debug=False, host="0.0.0.0", port=port, use_reloader=False)
+app.run(debug=False, use_reloader=False)
